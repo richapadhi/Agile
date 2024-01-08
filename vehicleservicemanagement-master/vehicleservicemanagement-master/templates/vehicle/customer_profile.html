@@ -67,7 +67,12 @@
 
 <br><br><br><br><br>
 <div class="center">
-  <img style="width:200px; height:200px; margin-left:200px;" src="{%static customer.profile_pic.url%}" alt="">
+      {% if customer.profile_pic %}
+          <img src="{% static customer.profile_pic.url %}" alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+      {% else %}
+      <!-- Provide a default image or placeholder if profile_pic is empty -->
+           <img src="{% static 'images/customer.png' %}" alt="Default User image" class="dropdown-toggle" data-toggle="user-menu">
+      {% endif %}
   <div class="w3-panel w3-blue">
     <h3 class="w3-text-orange" style="text-shadow:1px 1px 0 #444"><b>Name : {{customer}}</b></h3>
     <h3 class="w3-text-orange" style="text-shadow:1px 1px 0 #444"><b>Mobile : {{customer.mobile}}</b></h3>

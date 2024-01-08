@@ -47,7 +47,12 @@
 
 			<li class="nav-item avt-wrapper">
 				<div class="avt dropdown">
-					<img src="{% static  customer.profile_pic.url %} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+					{% if customer.profile_pic %}
+						<img src="{% static customer.profile_pic.url %}" alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+					{% else %}
+					<!-- Provide a default image or placeholder if profile_pic is empty -->
+						 <img src="{% static 'images/customer.png' %}" alt="Default User image" class="dropdown-toggle" data-toggle="user-menu">
+					{% endif %}
 					<ul id="user-menu" class="dropdown-menu">
 
 						<li  class="dropdown-menu-item">
