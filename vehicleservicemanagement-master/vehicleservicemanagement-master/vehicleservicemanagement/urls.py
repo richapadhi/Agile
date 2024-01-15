@@ -94,4 +94,5 @@ urlpatterns = [
 
     path('aboutus', views.aboutus_view),
     path('contactus', views.contactus_view),
+
 ]

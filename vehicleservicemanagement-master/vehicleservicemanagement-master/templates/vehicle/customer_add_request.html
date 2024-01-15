@@ -37,32 +37,42 @@
 
 
 <br><br><br><br><br>
-<h1 style="text-align:center;">MAKE REQUEST</h1>
+<h1 style="text-align:center;">CREATE REQUEST</h1>
 <div>
   <form method="post" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
-    <label for="category">Vehicle Category</label>
-    {% render_field enquiry.category class="form-control"  %}<br>
+        <label for="projectInformation">Project Information:</label>
+        <input type="text" id="projectInformation" name="projectInformation" required>
 
-    <label for="vehicle_no">Vehicle Number</label>
-    {% render_field enquiry.vehicle_no class="form-control" placeholder="Vehicle Number" %}
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" required>
 
-    <label for="vehicle_name">Vehicle Name</label>
-    {% render_field enquiry.vehicle_name class="form-control" placeholder="Vehicle Name" %}
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" required>
+          <br> <!-- Line break added here -->
 
-    <label for="vehicle_brand">Vehicle Brand</label>
-    {% render_field enquiry.vehicle_brand class="form-control" placeholder="Vehicle Brand" %}
+        <label for="workLocation">Work Location:</label>
+        <input type="text" id="workLocation" name="workLocation" required>
 
-    <label for="vehicle_model">Vehicle Model</label>
-    {% render_field enquiry.vehicle_model class="form-control" placeholder="Vehicle Model" %}
+        <label for="positionDomain">Position Domain:</label>
+        <input type="text" id="positionDomain" name="positionDomain" required>
 
-    <label for="problem_description">Problem Description</label>
-    {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %}
+        <label for="positionRole">Position Role:</label>
+        <input type="text" id="positionRole" name="positionRole" required>
 
+        <label for="experienceLevel">Experience Level:</label>
+        <select id="experienceLevel" name="experienceLevel" required>
+            <option value="">Select Experience Level</option>
+            <option value="Entry Level">Entry Level</option>
+            <option value="Mid Level">Mid Level</option>
+            <option value="Senior Level">Senior Level</option>
+        </select>
 
+        <label for="technology">Technology:</label>
+        <input type="text" id="technology" name="technology" required>
 
-    <input type="submit" value="Submit">
-  </form>
+        <input type="submit" value="Submit">
+    </form>
 </div>
 
 

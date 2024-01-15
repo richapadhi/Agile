@@ -749,3 +749,5 @@ def contactus_view(request):
             send_mail(str(name)+' || '+str(email),message,settings.EMAIL_HOST_USER, settings.EMAIL_RECEIVING_USER, fail_silently = False)
             return render(request, 'vehicle/contactussuccess.html')
     return render(request, 'vehicle/contactus.html', {'form':sub})
+
+
