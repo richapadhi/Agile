@@ -9,7 +9,7 @@
 			<div class="col-12 col-m-12 col-sm-12">
 				<div class="card">
 					<div class="card-header">
-						<h3 style="color:red; text-align:center" >Pending Request & Delete
+						<h3 style="color:red; text-align:center" >Request Status
 						</h3>
 
 					</div>
@@ -17,25 +17,30 @@
 						<table>
 							<thead>
                 <tr>
-                  <th>Vehicle Name</th>
-                  <th>Category</th>
-                  <th>Vehicle Number</th>
-                  <th>Problem Description</th>
-                  <th>Enquiry Date</th>
-                  <th>Status</th>
+                  <th>Project Information</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Work Location</th>
+                  <th>Position Domain</th>
+                  <th>Postion Role</th>
+                  <th>Experience Level</th>
+                  <th>Technology</th>
 								  <th>Delete Enquiry</th>
+
                 </tr>
 							</thead>
 							<tbody>
                 {% for enq in enquiries %}
                 <tr>
-                  <td>{{enq.vehicle_name}}</td>
-                  <td>{{enq.category}}</td>
-                  <td>{{enq.vehicle_no}}</td>
-                  <td>{{enq.problem_description}}</td>
-                  <td>{{enq.date}}</td>
-                  <td>{{enq.status}}</td>
-                  <td><a style="color:blue; text-decoration:none;font-size:25px;"href="{% url 'customer-delete-request' enq.id  %}">&#10008;</a></td>
+                    <td>{{ enq.projectInformation }}</td>
+                    <td>{{ enq.startDate }}</td>
+                    <td>{{ enq.endDate }}</td>
+                    <td>{{ enq.workLocation }}</td>
+                    <td>{{ enq.positionDomain }}</td>
+                    <td>{{ enq.positionRole }}</td>
+                    <td>{{ enq.experienceLevel }}</td>
+                    <td>{{ enq.technology }}</td>
+                    <td><a style="color:red; text-decoration:none;font-size:25px;"href="{% url 'customer-delete-request' enq.id  %}">&#10008;</a></td>
                 </tr>
                 {% endfor %}
 

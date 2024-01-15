@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from django.db.models import Q
+from .forms import RequestForm
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -491,33 +492,21 @@ def admin_feedback_view(request):
 @user_passes_test(is_customer)
 def customer_dashboard_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    work_in_progress=models.Request.objects.all().filter(customer_id=customer.id,status='Repairing').count()
-    work_completed=models.Request.objects.all().filter(customer_id=customer.id).filter(Q(status="Repairing Done") | Q(status="Released")).count()
-    new_request_made=models.Request.objects.all().filter(customer_id=customer.id).filter(Q(status="Pending") | Q(status="Approved")).count()
-    bill=models.Request.objects.all().filter(customer_id=customer.id).filter(Q(status="Repairing Done") | Q(status="Released")).aggregate(Sum('cost'))
-    print(bill)
-    dict={
-    'work_in_progress':work_in_progress,
-    'work_completed':work_completed,
-    'new_request_made':new_request_made,
-    'bill':bill['cost__sum'],
-    'customer':customer,
-    }
-    return render(request,'vehicle/customer_dashboard.html',context=dict)
+    return render(request,'vehicle/customer_dashboard.html')
 
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    return render(request,'vehicle/customer_request.html',{'customer':customer})
+    return render(request,'vehicle/customer_dashboard.html',{'customer':customer})
 
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_view_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiries=models.Request.objects.all().filter(customer_id=customer.id , status="Pending")
+    enquiries=models.Request.objects.all().filter(customer_id=customer.id )
     return render(request,'vehicle/customer_view_request.html',{'customer':customer,'enquiries':enquiries})
 
 
@@ -533,10 +522,11 @@ def customer_delete_request_view(request,pk):
 @user_passes_test(is_customer)
 def customer_view_approved_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiries=models.Request.objects.all().filter(customer_id=customer.id).exclude(status='Pending')
+    enquiries=models.Request.objects.all().filter(customer_id=customer.id)
     return render(request,'vehicle/customer_view_approved_request.html',{'customer':customer,'enquiries':enquiries})
 
 @login_required(login_url='customerlogin')
+@user_passes_test(is_customer)
 @user_passes_test(is_customer)
 def customer_view_approved_request_invoice_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
@@ -559,7 +549,7 @@ def customer_add_request_view(request):
             enquiry_x.save()
         else:
             print("form is invalid")
-        return HttpResponseRedirect('customer-dashboard')
+        return HttpResponseRedirect('customer-view-request')
     return render(request,'vehicle/customer_add_request.html',{'enquiry':enquiry,'customer':customer})
 
 

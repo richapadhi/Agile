@@ -36,7 +36,7 @@ class MechanicSalaryForm(forms.Form):
 class RequestForm(forms.ModelForm):
     class Meta:
         model=models.Request
-        fields=['category','vehicle_no','vehicle_name','vehicle_model','vehicle_brand','problem_description']
+        fields=['projectInformation','startDate','endDate','workLocation','positionDomain','positionRole', 'experienceLevel', 'technology']
         widgets = {
         'problem_description':forms.Textarea(attrs={'rows': 3, 'cols': 30})
         }

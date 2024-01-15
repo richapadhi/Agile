@@ -19,6 +19,14 @@
     .alert {
       margin: 0px;
     }
+    .centered-images {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .centered-images img {
+    margin: 10px; /* Adds space around each image */
   </style>
 
   <title></title>
@@ -28,29 +36,42 @@
 
   {% include "vehicle/navbar.html" %}
   <br><br>
-  <center>
-    <h3 class='alert alert-success' style="margin-bottom:0px;">About Us !</h3>
-  </center>
   <div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
-    <h1 class="display-4">Hello Rider</h1>
-    <p class="lead">A genuine solution to vehicle problems</p>
+    <h1 class="display-4">Service Management Portal</h1>
+    <p class="lead">Developed by Team 4a</p>
     <hr class="my-4">
-    <p>Explore our Website.</p>
-    <p class="lead">
+    <p>Team Members</p>
+    <div class="centered-images">
+      <div class="image-container">
+        <img src="{% static "images/customer.png" %}" width="180" height="180" alt="Farima" />
+         <p>Farima</p>
+      </div>
+      <div class="image-container">
+        <img src="{% static "images/Kavya.jpg" %}" width="180" height="180" alt="Kavya" />
+        <p>Kavya H C</p>
+      </div>
+      <div class="image-container">
+        <img src="{% static "images/Pranil.jpg" %}" width="180" height="180" alt="Pranil" />
+        <p>Pranil G</p>
+      </div>
+      <div class="image-container">
+        <img src="{% static "images/Richa.jpg " %}" width="180" height="180" alt="Richa" />
+        <p>Richa Padhi</p>
+      </div>
+      <div class="image-container">
+        <img src="{% static "images/customer.png" %}" width="180" height="180" alt="Soheil" />
+        <p>Soheil Nasiri</p>
+      </div>
+      <div class="image-container">
+        <img src="{% static "images/Theertha.jpg" %}" width="180" height="180" alt="Theertha" />
+        <p>Theertha Bharathan</p>
+      </div>
+    </div>
+  </div>
+
+      <p class="lead">
       <a class="btn btn-primary btn-lg" href="/" role="button">HOME</a>
     </p>
-  </div>
-  <marquee behavior="scroll" direction="left">
-   <img src="{% static "images/ferrari.png" %}" width="120" height="80" alt="ferrari" />
-    <img src="{% static "images/ford.png" %}" width="120" height="80" alt="ford" />
-   <img src="{% static "images/lambo.png" %}" width="120" height="80" alt="lambo" />
-   <img src="{% static "images/mahindra.png" %}" width="120" height="80" alt="mahindra" />
-   <img src="{% static "images/tvs.png" %}" width="120" height="80" alt="tvs" />
-   <img src="{% static "images/tata.png" %}" width="120" height="80" alt="tata" />
-   <img src="{% static "images/hero.png" %}" width="120" height="80" alt="hero" />
-   <img src="{% static "images/rolls.png" %}" width="120" height="80" alt="rolls" />
-   <img src="{% static "images/suzuki.png" %}" width="120" height="80" alt="suzuki" />
- </marquee>
   {% include "vehicle/footer.html" %}
 </body>
 

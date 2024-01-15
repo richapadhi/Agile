@@ -34,31 +34,27 @@ class Mechanic(models.Model):
 
 
 class Request(models.Model):
-    cat=(('two wheeler with gear','two wheeler with gear'),('two wheeler without gear','two wheeler without gear'),('three wheeler','three wheeler'),('four wheeler','four wheeler'))
-    category=models.CharField(max_length=50,choices=cat)
-
-    vehicle_no=models.PositiveIntegerField(null=False)
-    vehicle_name = models.CharField(max_length=40,null=False)
-    vehicle_model = models.CharField(max_length=40,null=False)
-    vehicle_brand = models.CharField(max_length=40,null=False)
-
-    problem_description = models.CharField(max_length=500,null=False)
-    date=models.DateField(auto_now=True)
-    cost=models.PositiveIntegerField(null=True)
-
-    customer=models.ForeignKey('Customer', on_delete=models.CASCADE,null=True)
-    mechanic=models.ForeignKey('Mechanic',on_delete=models.CASCADE,null=True)
-
-    stat=(('Pending','Pending'),('Approved','Approved'),('Repairing','Repairing'),('Repairing Done','Repairing Done'),('Released','Released'))
-    status=models.CharField(max_length=50,choices=stat,default='Pending',null=True)
-
+    projectInformation = models.CharField(max_length=255, null=True)  # Assuming a character limit
+    startDate = models.DateField(null=True)
+    endDate = models.DateField(null=True)
+    workLocation = models.CharField(max_length=255, null=True)
+    positionDomain = models.CharField(max_length=255, null=True)
+    positionRole = models.CharField(max_length=255, null=True)
+    EXPERIENCE_LEVEL_CHOICES = [
+        ('Entry Level', 'Entry Level'),
+        ('Mid Level', 'Mid Level'),
+        ('Senior Level', 'Senior Level'),
+    ]
+    experienceLevel = models.CharField(
+        max_length=50,
+        choices=EXPERIENCE_LEVEL_CHOICES,
+        default='Entry Level',
+        null = True
+    )
+    technology = models.CharField(max_length=255, null=True)
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return self.problem_description
-
-class Attendance(models.Model):
-    mechanic=models.ForeignKey('Mechanic',on_delete=models.CASCADE,null=True)
-    date=models.DateField()
-    present_status = models.CharField(max_length=10)
+        return self.projectInformation
 
 class Feedback(models.Model):
     date=models.DateField(auto_now=True)

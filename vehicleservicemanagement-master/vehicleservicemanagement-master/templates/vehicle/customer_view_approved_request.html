@@ -9,7 +9,7 @@
 			<div class="col-12 col-m-12 col-sm-12">
 				<div class="card">
 					<div class="card-header">
-						<h3 style="color:red; text-align:center" >Approved Request
+						<h3 style="color:red; text-align:center" >Offers
 						</h3>
 
 					</div>
@@ -17,24 +17,28 @@
 						<table>
 							<thead>
                 <tr>
-                  <th>Vehicle Name</th>
-                  <th>Category</th>
-                  <th>Vehicle Number</th>
-                  <th>Problem Description</th>
-                  <th>Enquiry Date</th>
-                  <th>Status</th>
+				  <th>Project Information</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Work Location</th>
+                  <th>Position Domain</th>
+                  <th>Postion Role</th>
+                  <th>Experience Level</th>
+                  <th>Technology</th>
 
                 </tr>
 							</thead>
 							<tbody>
                 {% for enq in enquiries %}
                 <tr>
-                  <td>{{enq.vehicle_name}}</td>
-                  <td>{{enq.category}}</td>
-                  <td>{{enq.vehicle_no}}</td>
-                  <td>{{enq.problem_description}}</td>
-                  <td>{{enq.date}}</td>
-                  <td>{{enq.status}}</td>
+                    <td>{{ enq.projectInformation }}</td>
+                    <td>{{ enq.startDate }}</td>
+                    <td>{{ enq.endDate }}</td>
+                    <td>{{ enq.workLocation }}</td>
+                    <td>{{ enq.positionDomain }}</td>
+                    <td>{{ enq.positionRole }}</td>
+                    <td>{{ enq.experienceLevel }}</td>
+                    <td>{{ enq.technology }}</td>
                   
                   </tr>
                 {% endfor %}
