@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'vehicleservicemanagement.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Service-Request',
-        'USER': 'postgres',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER': 'sqlite3',
         'PASSWORD': '123',
         'HOST': 'localhost',   # Set to your PostgreSQL server's host
         'PORT': '5432',        # Set to your PostgreSQL server's port
