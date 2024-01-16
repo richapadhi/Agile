@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from django.db.models import Q
 from .forms import RequestForm
+from django.shortcuts import render
+import requests
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -538,19 +540,41 @@ def customer_view_approved_request_invoice_view(request):
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_add_request_view(request):
-    customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiry=forms.RequestForm()
-    if request.method=='POST':
-        enquiry=forms.RequestForm(request.POST)
+    api_url = 'http://ec2-16-171-169-38.eu-north-1.compute.amazonaws.com:5000/api/mastertype/all'
+    # Make a request to the API
+    response = requests.get(api_url)
+    if response.status_code == 200:
+        api_data = response.json()
+        domain_names = []
+        roleName = []
+        exp_level = []
+        technologyCatalog = []
+
+        # Access domainName from the first element of domains
+        for domain in api_data[0]['domains']:
+            domain_names.append(domain['domainName'])
+            for role in domain['roles']:
+                roleName.append(role['roleName'])
+
+        context = {'domain_names': domain_names,'roleName': roleName,}
+    else:
+        context = {'domain_names': None,'roleName': None}
+
+
+
+    customer = models.Customer.objects.get(user_id=request.user.id)
+    enquiry = forms.RequestForm()
+    if request.method == 'POST':
+        enquiry = forms.RequestForm(request.POST)
         if enquiry.is_valid():
-            customer=models.Customer.objects.get(user_id=request.user.id)
-            enquiry_x=enquiry.save(commit=False)
-            enquiry_x.customer=customer
+            customer = models.Customer.objects.get(user_id=request.user.id)
+            enquiry_x = enquiry.save(commit=False)
+            enquiry_x.customer = customer
             enquiry_x.save()
         else:
             print("form is invalid")
-        return HttpResponseRedirect('customer-view-request')
-    return render(request,'vehicle/customer_add_request.html',{'enquiry':enquiry,'customer':customer})
+        return HttpResponseRedirect('customer-dashboard')
+    return render(request, 'vehicle/customer_add_request.html', {'enquiry': enquiry, 'customer': customer,'domain_names': domain_names,'roleName':roleName})
 
 
 @login_required(login_url='customerlogin')

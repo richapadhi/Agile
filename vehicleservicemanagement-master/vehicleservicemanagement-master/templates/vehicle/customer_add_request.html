@@ -3,79 +3,132 @@
 {% block content %}
 <head>
   <style media="screen">
-    input[type=text], select,input[type=number] , textarea{
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
+    /* Container styling */
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-  input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+    /* Form element styling */
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
 
-  input[type=submit]:hover {
-    background-color: #45a049;
-  }
+    /* Submit button styling */
+    .submit-button {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
+    .submit-button:hover {
+      background-color: #45a049;
+    }
 
+    /* Additional styling */
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
   </style>
-
-
 </head>
-
-
 
 <br><br><br><br><br>
 <h1 style="text-align:center;">CREATE REQUEST</h1>
-<div>
-  <form method="post" style="margin-left:200px;margin-right:200px;">
-      {% csrf_token %}
-        <label for="projectInformation">Project Information:</label>
-        <input type="text" id="projectInformation" name="projectInformation" required>
+<div class="form-container">
+  <form method="post">
+    {% csrf_token %}
 
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate" required>
+    <!-- Project Information -->
+    <div class="form-group">
+      <label for="projectInformation">Project Information:</label>
+      <input type="text" id="projectInformation" name="projectInformation" class="form-input" required>
+    </div>
 
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate" required>
-          <br> <!-- Line break added here -->
+    <!-- Start Date and End Date -->
+    <div class="form-group">
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate" name="startDate" class="form-input" required>
 
-        <label for="workLocation">Work Location:</label>
-        <input type="text" id="workLocation" name="workLocation" required>
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate" name="endDate" class="form-input" required>
+    </div>
 
-        <label for="positionDomain">Position Domain:</label>
-        <input type="text" id="positionDomain" name="positionDomain" required>
+    <!-- Work Location -->
+    <div class="form-group">
+      <label for="workLocation">Work Location:</label>
+      <input type="text" id="workLocation" name="workLocation" class="form-input" required>
+    </div>
 
-        <label for="positionRole">Position Role:</label>
-        <input type="text" id="positionRole" name="positionRole" required>
+    <!-- Select Domain -->
+    <div class="form-group">
+      <label for="domain">Select Domain:</label>
+      <select id="domain" name="domain" class="form-input">
+        {% if domain_names %}
+          <option value="" disabled selected>Select Domain</option>
+          {% for domain_name in domain_names %}
+            <option value="{{ domain_name }}">{{ domain_name }}</option>
+          {% endfor %}
+        {% else %}
+          <option value="" disabled>No domains available</option>
+        {% endif %}
+      </select>
+    </div>
 
-        <label for="experienceLevel">Experience Level:</label>
-        <select id="experienceLevel" name="experienceLevel" required>
-            <option value="">Select Experience Level</option>
-            <option value="Entry Level">Entry Level</option>
-            <option value="Mid Level">Mid Level</option>
-            <option value="Senior Level">Senior Level</option>
-        </select>
+    <!-- Select Role -->
+    <div class="form-group">
+      <label for="roleName">Select Role:</label>
+      <select id="roleName" name="roleName" class="form-input">
+        {% if roleName %}
+          <option value="" disabled selected>Select Role:</option>
+          {% for roleName in roleName %}
+            <option value="{{ roleName }}">{{ roleName }}</option>
+          {% endfor %}
+        {% else %}
+          <option value="" disabled>No Roles available</option>
+        {% endif %}
+      </select>
+    </div>
 
-        <label for="technology">Technology:</label>
-        <input type="text" id="technology" name="technology" required>
+    <!-- Experience Level -->
+    <div class="form-group">
+      <label for="experienceLevel">Experience Level:</label>
+      <select id="experienceLevel" name="experienceLevel" class="form-input" required>
+        <option value="">Select Experience Level</option>
+        <option value="Entry Level">Entry Level</option>
+        <option value="Mid Level">Mid Level</option>
+        <option value="Senior Level">Senior Level</option>
+      </select>
+    </div>
 
-        <input type="submit" value="Submit">
-    </form>
+    <!-- Technology -->
+    <div class="form-group">
+      <label for="technology">Technology:</label>
+      <input type="text" id="technology" name="technology" class="form-input" required>
+    </div>
+
+        <!-- Skills -->
+    <div class="form-group">
+      <label for="skill">Skills:</label>
+      <input type="text" id="skill" name="skill" class="form-input" required>
+    </div>
+
+    <!-- Submit button -->
+    <input type="submit" value="Submit" class="submit-button">
+  </form>
 </div>
-
-
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock content %}
