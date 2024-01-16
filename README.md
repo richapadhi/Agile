@@ -15,7 +15,6 @@
 ---
 ### Other Features
 - we can change theme of website day(white) and night(black)
-- if customer is deleted by admin then their request(Enquiry) will be deleted automatically
 
 ## HOW TO RUN THIS PROJECT
 - Install Python(3.7.6) (Dont Forget to Tick Add to Path while installing Python)
