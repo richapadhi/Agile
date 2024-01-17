@@ -6,9 +6,13 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from django.db.models import Q
-from .forms import RequestForm
 from django.shortcuts import render
 import requests
+from django.http import HttpResponse
+from .forms import RequestForm
+import json
+from datetime import datetime
+from django.http import HttpResponseRedirect
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -567,12 +571,55 @@ def customer_add_request_view(request):
     if request.method == 'POST':
         enquiry = forms.RequestForm(request.POST)
         if enquiry.is_valid():
-            customer = models.Customer.objects.get(user_id=request.user.id)
-            enquiry_x = enquiry.save(commit=False)
-            enquiry_x.customer = customer
-            enquiry_x.save()
+            project_information = enquiry.cleaned_data['projectInformation']
+            start_date = enquiry.cleaned_data['startDate']
+            end_date = enquiry.cleaned_data['endDate']
+            work_location = enquiry.cleaned_data['workLocation']
+            domain = enquiry.cleaned_data['domain']
+            role = enquiry.cleaned_data['roleName']
+            experience_level = enquiry.cleaned_data['experienceLevel']
+            technology = enquiry.cleaned_data['technology']
+            skill = enquiry.cleaned_data['skill']
+            #customer = models.Customer.objects.get(user_id=request.user.id)
+            #enquiry_x = enquiry.save(commit=False)
+            #enquiry_x.customer = customer
+            #enquiry_x.save()
+
+            # Prepare data payload
+            data = {
+                "projectInfo": project_information,
+                "startDate": start_date.strftime('%Y-%m-%d'), # Convert to string
+                "endDate": end_date.strftime('%Y-%m-%d'), # Convert to string
+                "workLocation": work_location,
+                "domain": domain,
+                "role": role,
+                "experience": experience_level,
+                "technology": technology,
+                "skill": skill,
+                # ...
+            }
+
+            # Make a POST request to the API
+            api_endpoint = "http://ec2-54-145-132-89.compute-1.amazonaws.com:9198/api/v1/serviceManagement"  # Update with your API endpoint
+            #response = requests.post(api_endpoint, data=data)
+            # Convert data to JSON format
+            json_data = json.dumps(data)
+
+            # Set the Content-Type header to indicate JSON data
+            headers = {'Content-Type': 'application/json'}
+
+            # Make a POST request to the API with JSON data
+
+            response = requests.post(api_endpoint, data=json_data, headers=headers)
+            print("status code:", response.status_code)
+            if response.status_code in [200, 201]:
+                return render(request, 'vehicle/success.html')
+
+            else:
+                return render(request, 'vehicle/error.html')
         else:
             print("form is invalid")
+            print(enquiry.errors)
         return HttpResponseRedirect('customer-dashboard')
     return render(request, 'vehicle/customer_add_request.html', {'enquiry': enquiry, 'customer': customer,'domain_names': domain_names,'roleName':roleName})
 
