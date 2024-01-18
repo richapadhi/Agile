@@ -13,19 +13,21 @@
 	--dark-second-color: #f5f6fa;
 	--dark-background: #23242D;
 	--dark-second-background: #181818;
+
+	--custom-color: #ea4c88;
 }
 
 .light {
 	--main-bg-color: var(--light-background);
 	--second-bg-color: var(--light-second-background);
-	--main-color: var(--light-color);
+	--main-color: var(--custom-color);
 	--second-color: var(--light-second-color);
 }
 
 .dark {
 	--main-bg-color: var(--dark-background);
 	--second-bg-color: var(--dark-second-background);
-	--main-color: var(--dark-color);
+	--main-color: var(--custom-color);
 	--second-color: var(--dark-second-color);
 }
 
@@ -67,8 +69,7 @@ body {
 .navbar {
 	display: flex;
 	flex-direction: row;
-	background: var(--main-bg-color);
-	color: var(--main-color);
+	background-color: #ea4c88 !important;
 	position: fixed;
 	top: 0;
 	right: 0;
