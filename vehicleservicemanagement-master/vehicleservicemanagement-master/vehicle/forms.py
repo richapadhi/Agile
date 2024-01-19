@@ -33,14 +33,17 @@ class MechanicSalaryForm(forms.Form):
     salary=forms.IntegerField();
 
 
-class RequestForm(forms.ModelForm):
-    class Meta:
-        model=models.Request
-        fields=['projectInformation','startDate','endDate','workLocation','positionDomain','positionRole', 'experienceLevel', 'technology']
-        widgets = {
-        'problem_description':forms.Textarea(attrs={'rows': 3, 'cols': 30})
-        }
 
+class RequestForm(forms.Form):
+    projectInformation = forms.CharField(label='Project Information',widget=forms.TextInput(attrs={'class': 'form-input'}), required=True)
+    startDate = forms.DateField(label='Start Date',widget=forms.DateInput(attrs={'class': 'form-input'}, format='%Y-%m-%d'),required=True)
+    endDate = forms.DateField(label='End Date',widget=forms.DateInput(attrs={'class': 'form-input'}, format='%Y-%m-%d'), required=True)
+    workLocation = forms.CharField(label='Work Location', widget=forms.TextInput(attrs={'class': 'form-input'}),required=True)
+    domain = forms.CharField(label='Select Domain', widget=forms.Select(attrs={'class': 'form-input'}), required=True)
+    roleName = forms.CharField(label='Select Role', widget=forms.Select(attrs={'class': 'form-input'}), required=True)
+    experienceLevel = forms.ChoiceField(label='Experience Level', widget=forms.Select(attrs={'class': 'form-input'}),choices=[('', 'Select Experience Level'), ('Entry Level', 'Entry Level'),('Mid Level', 'Mid Level'), ('Senior Level', 'Senior Level')],required=True)
+    technology = forms.CharField(label='Technology', widget=forms.TextInput(attrs={'class': 'form-input'}),required=True)
+    skill = forms.CharField(label='Skills', widget=forms.TextInput(attrs={'class': 'form-input'}), required=True)
 class AdminRequestForm(forms.Form):
     #to_field_name value will be stored when form is submitted.....__str__ method of customer model will be shown there in html
     customer=forms.ModelChoiceField(queryset=models.Customer.objects.all(),empty_label="Customer Name",to_field_name='id')

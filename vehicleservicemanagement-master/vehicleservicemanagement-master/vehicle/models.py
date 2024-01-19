@@ -33,7 +33,10 @@ class Mechanic(models.Model):
         return self.user.first_name
 
 
+
 class Request(models.Model):
+    #serviceId = models.AutoField(null=True, blank=True)
+    #serviceId = models.AutoField(primary_key=True)
     projectInformation = models.CharField(max_length=255, null=True)  # Assuming a character limit
     startDate = models.DateField(null=True)
     endDate = models.DateField(null=True)
@@ -52,10 +55,10 @@ class Request(models.Model):
         null = True
     )
     technology = models.CharField(max_length=255, null=True)
+    skill = models.CharField(max_length=255, null=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True)
-    def __str__(self):
+    def _str_(self):
         return self.projectInformation
-
 class Feedback(models.Model):
     date=models.DateField(auto_now=True)
     by=models.CharField(max_length=40)

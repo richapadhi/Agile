@@ -25,6 +25,7 @@
                   <th>Postion Role</th>
                   <th>Experience Level</th>
                   <th>Technology</th>
+                  <th>Skills</th>
 								  <th>Delete Enquiry</th>
 
                 </tr>
@@ -40,6 +41,7 @@
                     <td>{{ enq.positionRole }}</td>
                     <td>{{ enq.experienceLevel }}</td>
                     <td>{{ enq.technology }}</td>
+                    <td>{{ enq.skill }}</td>
                     <td><a style="color:red; text-decoration:none;font-size:25px;"href="{% url 'customer-delete-request' enq.id  %}">&#10008;</a></td>
                 </tr>
                 {% endfor %}

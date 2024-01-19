@@ -8,6 +8,10 @@ from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render
 import requests
+import json
+from .models import Request  # Import your Request model
+
+
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -513,10 +517,21 @@ def customer_view_request_view(request):
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
-def customer_delete_request_view(request,pk):
-    customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiry=models.Request.objects.get(id=pk)
-    enquiry.delete()
+def customer_delete_request_view(request, pk):
+    # Retrieve the enquiry to be deleted
+    try:
+        enquiry = Request.objects.get(pk=pk)
+        # Check if the user has the permission to delete this enquiry (e.g., ownership check)
+        if enquiry.customer.user_id == request.user.id:
+            enquiry.delete()  # Delete the enquiry from the database
+        else:
+            # Handle the case where the user doesn't have permission to delete this enquiry
+            return render(request, 'vehicle/error.html')
+    except Request.DoesNotExist:
+        # Handle the case where the enquiry with the given primary key doesn't exist
+        return render(request, 'vehicle/error.html')
+
+    # Redirect back to the 'customer-view-request' page after successful deletion
     return redirect('customer-view-request')
 
 @login_required(login_url='customerlogin')
@@ -566,15 +581,69 @@ def customer_add_request_view(request):
     if request.method == 'POST':
         enquiry = forms.RequestForm(request.POST)
         if enquiry.is_valid():
+            project_information = enquiry.cleaned_data['projectInformation']
+            start_date = enquiry.cleaned_data['startDate']
+            end_date = enquiry.cleaned_data['endDate']
+            work_location = enquiry.cleaned_data['workLocation']
+            domain = enquiry.cleaned_data['domain']
+            role = enquiry.cleaned_data['roleName']
+            experience_level = enquiry.cleaned_data['experienceLevel']
+            technology = enquiry.cleaned_data['technology']
+            skill = enquiry.cleaned_data['skill']
             customer = models.Customer.objects.get(user_id=request.user.id)
-            enquiry_x = enquiry.save(commit=False)
-            enquiry_x.customer = customer
-            enquiry_x.save()
+
+
+            # Prepare data payload
+            data = {
+                "projectInfo": project_information,
+                "startDate": start_date.strftime('%Y-%m-%d'), # Convert to string
+                "endDate": end_date.strftime('%Y-%m-%d'), # Convert to string
+                "workLocation": work_location,
+                "domain": domain,
+                "role": role,
+                "experience": experience_level,
+                "technology": technology,
+                "skill": skill,
+                # ...
+            }
+
+            enquiry_instance = Request(
+                projectInformation=project_information,
+                startDate=start_date,
+                endDate=end_date,
+                workLocation=work_location,
+                positionDomain=domain,
+                positionRole=role,
+                experienceLevel=experience_level,
+                technology=technology,
+                skill=skill,
+                customer=customer  # Assuming customer is a foreign key field
+            )
+            enquiry_instance.save()
+
+            # Make a POST request to the API
+            api_endpoint = "http://ec2-54-145-132-89.compute-1.amazonaws.com:9198/api/v1/serviceManagement"  # Update with your API endpoint
+            #response = requests.post(api_endpoint, data=data)
+            # Convert data to JSON format
+            json_data = json.dumps(data)
+            print(json_data)
+
+            # Set the Content-Type header to indicate JSON data
+            headers = {'Content-Type': 'application/json'}
+
+            # Make a POST request to the API with JSON data
+
+            response = requests.post(api_endpoint, data=json_data, headers=headers)
+            print("status code:", response.status_code)
+            if response.status_code in [200, 201]:
+                return HttpResponseRedirect('customer-view-request')
+            else:
+                return render(request, 'vehicle/error.html')
         else:
             print("form is invalid")
+            print(enquiry.errors)
         return HttpResponseRedirect('customer-dashboard')
     return render(request, 'vehicle/customer_add_request.html', {'enquiry': enquiry, 'customer': customer,'domain_names': domain_names,'roleName':roleName})
-
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
