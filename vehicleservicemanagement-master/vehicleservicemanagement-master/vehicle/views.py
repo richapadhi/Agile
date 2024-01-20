@@ -622,7 +622,7 @@ def customer_add_request_view(request):
             enquiry_instance.save()
 
             # Make a POST request to the API
-            api_endpoint = "http://ec2-54-145-132-89.compute-1.amazonaws.com:9198/api/v1/serviceManagement"  # Update with your API endpoint
+            api_endpoint = "http://ec2-54-166-224-107.compute-1.amazonaws.com:9198/api/v1/serviceManagement"  # Update with your API endpoint
             #response = requests.post(api_endpoint, data=data)
             # Convert data to JSON format
             json_data = json.dumps(data)
