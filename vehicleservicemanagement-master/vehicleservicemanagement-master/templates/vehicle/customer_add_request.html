@@ -1,7 +1,11 @@
 {% extends 'vehicle/customerbase.html' %}
 {% load widget_tweaks %}
 {% block content %}
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Request</title>
   <style media="screen">
     /* Container styling */
     .form-container {
@@ -45,90 +49,183 @@
   </style>
 </head>
 
-<br><br><br><br><br>
-<h1 style="text-align:center;">CREATE REQUEST</h1>
-<div class="form-container">
-  <form method="post">
-    {% csrf_token %}
+<body>
+  <br><br><br><br><br>
+  <h1 style="text-align:center;">CREATE REQUEST</h1>
+  <div class="form-container">
+    <form method="post">
+      {% csrf_token %}
 
-    <!-- Project Information -->
-    <div class="form-group">
-      <label for="projectInformation">Project Information:</label>
-      <input type="text" id="projectInformation" name="projectInformation" class="form-input" required>
-    </div>
+      <!-- Project Information -->
+      <div class="form-group">
+        <label for="projectInformation">Project Information:</label>
+        <input type="text" id="projectInformation" name="projectInformation" class="form-input" required>
+      </div>
 
-    <!-- Start Date and End Date -->
-    <div class="form-group">
-      <label for="startDate">Start Date:</label>
-      <input type="date" id="startDate" name="startDate" class="form-input" required>
+      <!-- Start Date and End Date -->
+      <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" class="form-input" required>
 
-      <label for="endDate">End Date:</label>
-      <input type="date" id="endDate" name="endDate" class="form-input" required>
-    </div>
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" class="form-input" required>
+      </div>
 
-    <!-- Work Location -->
-    <div class="form-group">
-      <label for="workLocation">Work Location:</label>
-      <input type="text" id="workLocation" name="workLocation" class="form-input" required>
-    </div>
+      <!-- Work Location -->
+      <div class="form-group">
+        <label for="workLocation">Work Location:</label>
+        <input type="text" id="workLocation" name="workLocation" class="form-input" required>
+      </div>
 
-    <!-- Select Domain -->
-    <div class="form-group">
-      <label for="domain">Select Domain:</label>
-      <select id="domain" name="domain" class="form-input">
-        {% if domain_names %}
-          <option value="" disabled selected>Select Domain</option>
-          {% for domain_name in domain_names %}
-            <option value="{{ domain_name }}">{{ domain_name }}</option>
+      <!-- Master Agreement Type -->
+      <div class="form-group">
+        <label for="masterAgreementType">Master Agreement Type:</label>
+        <select id="masterAgreementType" name="masterAgreementType" class="form-input">
+          {% for master_agreement in context.master_agreements %}
+            <option value="{{ master_agreement.masterAgreementTypeId }}">
+              {{ master_agreement.masterAgreementTypeName }}
+            </option>
           {% endfor %}
-        {% else %}
-          <option value="" disabled>No domains available</option>
-        {% endif %}
-      </select>
-    </div>
+        </select>
+      </div>
 
-    <!-- Select Role -->
-    <div class="form-group">
-      <label for="roleName">Select Role:</label>
-      <select id="roleName" name="roleName" class="form-input">
-        {% if roleName %}
-          <option value="" disabled selected>Select Role:</option>
-          {% for roleName in roleName %}
-            <option value="{{ roleName }}">{{ roleName }}</option>
-          {% endfor %}
-        {% else %}
-          <option value="" disabled>No Roles available</option>
-        {% endif %}
-      </select>
-    </div>
+      <!-- Select Domain -->
+      <div class="form-group">
+        <label for="domain">Select Domain:</label>
+        <select id="domain" name="domain" class="form-input">
+          {% if domain_names %}
+            <option value="" disabled selected>Select Domain</option>
+            {% for domain in domain_names %}
+              <option value="{{ domain.id }}">{{ domain.domainName }}</option>
+            {% endfor %}
+          {% else %}
+            <option value="" disabled>No domains available</option>
+          {% endif %}
+        </select>
+      </div>
 
-    <!-- Experience Level -->
-    <div class="form-group">
-      <label for="experienceLevel">Experience Level:</label>
-      <select id="experienceLevel" name="experienceLevel" class="form-input" required>
-        <option value="">Select Experience Level</option>
-        <option value="Entry Level">Entry Level</option>
-        <option value="Mid Level">Mid Level</option>
-        <option value="Senior Level">Senior Level</option>
-      </select>
-    </div>
+      <!-- Select Role -->
+      <div class="form-group">
+        <label for="roleName">Select Role:</label>
+        <select id="roleName" name="roleName" class="form-input">
+          {% if roleName %}
+            <option value="" disabled selected>Select Role:</option>
+            {% for roleName in roleName %}
+              <option value="{{ roleName }}">{{ roleName }}</option>
+            {% endfor %}
+          {% else %}
+            <option value="" disabled>No Roles available</option>
+          {% endif %}
+        </select>
+      </div>
 
-    <!-- Technology -->
-    <div class="form-group">
-      <label for="technology">Technology:</label>
-      <input type="text" id="technology" name="technology" class="form-input" required>
-    </div>
+      <!-- Experience Level -->
+      <div class="form-group">
+        <label for="experienceLevel">Experience Level:</label>
+        <select id="experienceLevel" name="experienceLevel" class="form-input" required>
+          <option value="">Select Experience Level</option>
+          <option value="Entry Level">Entry Level</option>
+          <option value="Mid Level">Mid Level</option>
+          <option value="Senior Level">Senior Level</option>
+        </select>
+      </div>
 
-        <!-- Skills -->
-    <div class="form-group">
-      <label for="skill">Skills:</label>
-      <input type="text" id="skill" name="skill" class="form-input" required>
-    </div>
+      <!-- Technology -->
+      <div class="form-group">
+        <label for="technology">Technology:</label>
+        <input type="text" id="technology" name="technology" class="form-input" required>
+      </div>
 
-    <!-- Submit button -->
-    <input type="submit" value="Submit" class="submit-button">
-  </form>
-</div>
+      <!-- Skills -->
+      <div class="form-group">
+        <label for="skill">Skills:</label>
+        <input type="text" id="skill" name="skill" class="form-input" required>
+      </div>
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <!-- Submit button -->
+      <input type="submit" value="Submit" class="submit-button">
+    </form>
+  </div>
+
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<!-- Add this script section at the end of your HTML template, just before the closing </body> tag -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Load master agreement type dropdown
+    $.ajax({
+      url: 'http://ec2-16-171-169-38.eu-north-1.compute.amazonaws.com:5000/api/mastertype/all',  // Update with your actual URL
+      type: 'GET',
+      success: function (data) {
+        var masterAgreementDropdown = $('#masterAgreementType');
+        var domainDropdown = $('#domain');
+        var roleDropdown = $('#roleName');
+
+        // Populate master agreement type dropdown
+        $.each(data, function (index, masterAgreement) {
+          masterAgreementDropdown.append($('<option>', {
+            value: masterAgreement.masterAgreementTypeId,
+            text: masterAgreement.masterAgreementTypeName
+          }));
+        });
+
+        // Handle master agreement type selection
+        function handleMasterAgreementTypeSelection() {
+          var selectedMasterAgreement = data.find(function (item) {
+            return item.masterAgreementTypeId == masterAgreementDropdown.val();
+          });
+
+          // Clear and populate domain dropdown
+          domainDropdown.empty();
+          $.each(selectedMasterAgreement.domains, function (index, domain) {
+            domainDropdown.append($('<option>', {
+              value: domain.domainName,
+              text: domain.domainName
+            }));
+          });
+
+          // Clear and populate role dropdown
+          roleDropdown.empty();
+          $.each(selectedMasterAgreement.domains[0].roles, function (index, role) {
+            roleDropdown.append($('<option>', {
+              value: role.roleName,
+              text: role.roleName
+            }));
+          });
+        }
+
+        // Initial handling of master agreement type selection
+        handleMasterAgreementTypeSelection();
+
+        // Handle master agreement type change event
+        masterAgreementDropdown.on('change', handleMasterAgreementTypeSelection);
+
+        // Handle domain selection
+        domainDropdown.on('change', function () {
+          var selectedDomain = data
+            .find(function (masterAgreement) {
+              return masterAgreement.masterAgreementTypeId == masterAgreementDropdown.val();
+            })
+            .domains.find(function (domain) {
+              return domain.domainName == domainDropdown.val();
+            });
+
+          // Clear and populate role dropdown
+          roleDropdown.empty();
+          $.each(selectedDomain.roles, function (index, role) {
+            roleDropdown.append($('<option>', {
+              value: role.roleName,
+              text: role.roleName
+            }));
+          });
+        });
+      }
+    });
+  });
+</script>
+
+
+</body>
+</html>
+
 {% endblock content %}

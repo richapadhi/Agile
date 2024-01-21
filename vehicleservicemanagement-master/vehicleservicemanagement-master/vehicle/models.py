@@ -41,6 +41,7 @@ class Request(models.Model):
     startDate = models.DateField(null=True)
     endDate = models.DateField(null=True)
     workLocation = models.CharField(max_length=255, null=True)
+    master_agreements = models.CharField(max_length=255, null=True)
     positionDomain = models.CharField(max_length=255, null=True)
     positionRole = models.CharField(max_length=255, null=True)
     EXPERIENCE_LEVEL_CHOICES = [

@@ -10,7 +10,8 @@ from django.shortcuts import render
 import requests
 import json
 from .models import Request  # Import your Request model
-
+import requests
+from django.http import JsonResponse
 
 
 def home_view(request):
@@ -555,8 +556,10 @@ def customer_view_approved_request_invoice_view(request):
 @user_passes_test(is_customer)
 def customer_add_request_view(request):
     api_url = 'http://ec2-16-171-169-38.eu-north-1.compute.amazonaws.com:5000/api/mastertype/all'
+
     # Make a request to the API
     response = requests.get(api_url)
+
     if response.status_code == 200:
         api_data = response.json()
         domain_names = []
@@ -564,20 +567,22 @@ def customer_add_request_view(request):
         exp_level = []
         technologyCatalog = []
 
-        # Access domainName from the first element of domains
-        for domain in api_data[0]['domains']:
-            domain_names.append(domain['domainName'])
-            for role in domain['roles']:
-                roleName.append(role['roleName'])
+        for master_agreement in api_data:
+            for domain in master_agreement.get('domains', []):
+                domain_names.append({'id': domain.get('id', ''), 'domainName': domain.get('domainName', '')})
+                #domain_names.append(domain.get('domainName', ''))
+                for role in domain.get('roles', []):
+                    roleName.append(role.get('roleName', ''))
 
-        context = {'domain_names': domain_names,'roleName': roleName,}
+        context = {'domain_names': domain_names, 'roleName': roleName, 'master_agreements': api_data}
+        forms.RequestForm.set_api_data(api_data)
+        enquiry = forms.RequestForm(                    )
     else:
-        context = {'domain_names': None,'roleName': None}
-
-
+        context = {'domain_names': None, 'roleName': None, 'master_agreements': None}
 
     customer = models.Customer.objects.get(user_id=request.user.id)
-    enquiry = forms.RequestForm()
+    #enquiry = forms.RequestForm()
+
     if request.method == 'POST':
         enquiry = forms.RequestForm(request.POST)
         if enquiry.is_valid():
@@ -585,12 +590,21 @@ def customer_add_request_view(request):
             start_date = enquiry.cleaned_data['startDate']
             end_date = enquiry.cleaned_data['endDate']
             work_location = enquiry.cleaned_data['workLocation']
+            master_agreements = enquiry.cleaned_data['masterAgreementType']
+            # Debug prints
+            print("Selected Domain ID:", enquiry.cleaned_data['domain'])
+            print("Selected Role Name:", enquiry.cleaned_data['roleName'])
+
             domain = enquiry.cleaned_data['domain']
             role = enquiry.cleaned_data['roleName']
             experience_level = enquiry.cleaned_data['experienceLevel']
             technology = enquiry.cleaned_data['technology']
             skill = enquiry.cleaned_data['skill']
             customer = models.Customer.objects.get(user_id=request.user.id)
+
+            # Debug prints
+            print("Processed Domain ID:", domain)
+            print("Processed Role Name:", role)
 
 
             # Prepare data payload
@@ -599,6 +613,7 @@ def customer_add_request_view(request):
                 "startDate": start_date.strftime('%Y-%m-%d'), # Convert to string
                 "endDate": end_date.strftime('%Y-%m-%d'), # Convert to string
                 "workLocation": work_location,
+                "masterAgreementName": master_agreements,
                 "domain": domain,
                 "role": role,
                 "experience": experience_level,
@@ -612,6 +627,7 @@ def customer_add_request_view(request):
                 startDate=start_date,
                 endDate=end_date,
                 workLocation=work_location,
+                master_agreements=master_agreements,
                 positionDomain=domain,
                 positionRole=role,
                 experienceLevel=experience_level,
@@ -644,6 +660,7 @@ def customer_add_request_view(request):
             print(enquiry.errors)
         return HttpResponseRedirect('customer-dashboard')
     return render(request, 'vehicle/customer_add_request.html', {'enquiry': enquiry, 'customer': customer,'domain_names': domain_names,'roleName':roleName})
+
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
