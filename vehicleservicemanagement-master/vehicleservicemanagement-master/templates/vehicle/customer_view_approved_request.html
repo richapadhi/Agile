@@ -1,56 +1,71 @@
 {% extends 'vehicle/customerbase.html' %}
 {% block content %}
 
-	<!-- main content -->
-	<div class="wrapper">
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 style="color:red; text-align:center">Offers</h3>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Service ID</th>
+                                <th>Project Information</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Work Location</th>
+                                <th>Domain</th>
+                                <th>Role</th>
+                                <th>Technology</th>
+                                <th>Experience</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for offer in offers %}
+                            <tr>
+                                <td><a href="?service_id={{ offer.serviceId }}">{{ offer.serviceId }}</a></td>
+                                <td>{{ offer.projectInfo }}</td>
+                                <td>{{ offer.startDate }}</td>
+                                <td>{{ offer.endDate }}</td>
+                                <td>{{ offer.workLocation }}</td>
+                                <td>{{ offer.domain }}</td>
+                                <td>{{ offer.role }}</td>
+                                <td>{{ offer.technology }}</td>
+                                <td>{{ offer.experience }}</td>
+                            </tr>
+                            {% if selected_service_id|stringformat:"s" == offer.serviceId|stringformat:"s" %}
+                                {% if specific_offers %}
+                                    {% for specific_offer in specific_offers %}
+                                    <tr>
+                                        <td colspan="9">
+                                            <div><strong>Employee Name:</strong> {{ specific_offer.employee.employeeName }}</div>
+                                            <div><strong>Role:</strong> {{ specific_offer.employee.employeeRole }}</div>
+                                            <div><strong>Experience:</strong> {{ specific_offer.employee.employeeExp }} years</div>
+                                            <div><strong>Price:</strong> {{ specific_offer.price }}</div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="9">No offers available for this service.</td>
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                            {% if not offers %}
+                            <tr>
+                                <td colspan="9">No service requests available.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- ****** table  start ********** -->
-		<div class="row">
-			<div class="col-12 col-m-12 col-sm-12">
-				<div class="card">
-					<div class="card-header">
-						<h3 style="color:red; text-align:center" >Offers
-						</h3>
-
-					</div>
-					<div class="card-content">
-						<table>
-							<thead>
-                <tr>
-				  <th>Project Information</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Work Location</th>
-                  <th>Position Domain</th>
-                  <th>Postion Role</th>
-                  <th>Experience Level</th>
-                  <th>Technology</th>
-
-                </tr>
-							</thead>
-							<tbody>
-                {% for enq in enquiries %}
-                <tr>
-                    <td>{{ enq.projectInformation }}</td>
-                    <td>{{ enq.startDate }}</td>
-                    <td>{{ enq.endDate }}</td>
-                    <td>{{ enq.workLocation }}</td>
-                    <td>{{ enq.positionDomain }}</td>
-                    <td>{{ enq.positionRole }}</td>
-                    <td>{{ enq.experienceLevel }}</td>
-                    <td>{{ enq.technology }}</td>
-                  
-                  </tr>
-                {% endfor %}
-
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-<!-- ****** table start ********** -->
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-	</div>
-	<!-- end main content -->
 {% endblock content %}

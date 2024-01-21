@@ -538,9 +538,29 @@ def customer_delete_request_view(request, pk):
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_view_approved_request_view(request):
-    customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiries=models.Request.objects.all().filter(customer_id=customer.id)
-    return render(request,'vehicle/customer_view_approved_request.html',{'customer':customer,'enquiries':enquiries})
+    all_offers_url = 'http://ec2-54-166-224-107.compute-1.amazonaws.com:9198/api/v1/serviceManagement'
+    specific_offers_url = 'https://agiledev3a.pythonanywhere.com/p3aplatform/api/service_offers'
+
+    # Fetch all offers
+    response = requests.get(all_offers_url)
+    offers = response.json() if response.status_code == 200 else []
+
+    selected_service_id = request.GET.get('service_id')
+    specific_offers = []
+
+    if selected_service_id:
+        # Fetch offers for specific service ID
+        response = requests.get(specific_offers_url)
+        if response.status_code == 200:
+            all_specific_offers = response.json()
+            # Filter offers for the selected service ID
+            specific_offers = [offer for offer in all_specific_offers if offer['serviceId'] == int(selected_service_id)]
+            print("specific_offers:",specific_offers)
+    return render(request, 'vehicle/customer_view_approved_request.html', {
+        'offers': offers,
+        'specific_offers': specific_offers,
+        'selected_service_id': selected_service_id
+    })
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
