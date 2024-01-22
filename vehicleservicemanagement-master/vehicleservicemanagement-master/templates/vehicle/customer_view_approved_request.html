@@ -1,5 +1,115 @@
 {% extends 'vehicle/customerbase.html' %}
 {% block content %}
+<style>
+    .button {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: background-color 0.3s, opacity 0.3s;
+        border-radius: 10px; /* Rounded edges */
+    }
+
+    .button:hover {
+        background-color: #005700; /* Darker shade for hover effect */
+        opacity: 0.8;
+    }
+
+    .button.decline {
+        background-color: red;
+    }
+
+    .button.decline:hover {
+        background-color: #950000; /* Darker shade for hover effect */
+    }
+
+    .button.disabled {
+        background-color: grey;
+        cursor: default;
+    }
+
+    .button.disabled:hover {
+        opacity: 1; /* No transparency for disabled buttons */
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadStoredStates();
+        addEventListeners();
+    });
+
+    function addEventListeners() {
+        var acceptButtons = document.querySelectorAll('[id^="accept-button-"]');
+        var declineButtons = document.querySelectorAll('[id^="decline-button-"]');
+
+        acceptButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                var offerId = this.id.split('-').pop();
+                handleOfferResponse(event, true, offerId);
+            });
+        });
+
+        declineButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                var offerId = this.id.split('-').pop();
+                handleOfferResponse(event, false, offerId);
+            });
+        });
+    }
+
+    function handleOfferResponse(event, isAccepted, offerId) {
+        event.preventDefault();
+
+        var button = isAccepted ? document.getElementById("accept-button-" + offerId) : document.getElementById("decline-button-" + offerId);
+        button.value = 'Processing...';
+        button.disabled = true;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://agiledev3a.pythonanywhere.com/p3aplatform/api/post_service_offer_response", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                button.disabled = false;
+                if (this.status == 200) {
+                    updateButtonState(offerId, isAccepted);
+                    localStorage.setItem(offerId, isAccepted ? "Accepted" : "Declined");
+                } else {
+                    button.value = isAccepted ? 'Accept' : 'Decline';
+                    console.error('Error processing request');
+                }
+            }
+        };
+        xhr.send("isAccepted=" + isAccepted + "&offerId=" + offerId);
+    }
+
+    function updateButtonState(offerId, isAccepted) {
+        var acceptButton = document.getElementById("accept-button-" + offerId);
+        var declineButton = document.getElementById("decline-button-" + offerId);
+        if (isAccepted) {
+            acceptButton.value = "Accepted";
+            acceptButton.disabled = true;
+            acceptButton.classList.add('disabled');
+            declineButton.style.display = "none";
+        } else {
+            declineButton.value = "Declined";
+            declineButton.disabled = true;
+            declineButton.classList.add('disabled');
+            acceptButton.style.display = "none";
+        }
+    }
+
+    function loadStoredStates() {
+        var acceptButtons = document.querySelectorAll('[id^="accept-button-"]');
+        acceptButtons.forEach(function(button) {
+            var offerId = button.id.split('-').pop();
+            var state = localStorage.getItem(offerId);
+            if (state) {
+                updateButtonState(offerId, state === "Accepted");
+            }
+        });
+    }
+</script>
 
 <div class="wrapper">
     <div class="row">
@@ -17,6 +127,7 @@
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Work Location</th>
+                                <th>Master Agreement Type</th>
                                 <th>Domain</th>
                                 <th>Role</th>
                                 <th>Technology</th>
@@ -31,28 +142,51 @@
                                 <td>{{ offer.startDate }}</td>
                                 <td>{{ offer.endDate }}</td>
                                 <td>{{ offer.workLocation }}</td>
+                                <td>{{ offer.masterAgreementName }}</td>
                                 <td>{{ offer.domain }}</td>
                                 <td>{{ offer.role }}</td>
                                 <td>{{ offer.technology }}</td>
                                 <td>{{ offer.experience }}</td>
                             </tr>
-                            {% if selected_service_id|stringformat:"s" == offer.serviceId|stringformat:"s" %}
-                                {% if specific_offers %}
-                                    {% for specific_offer in specific_offers %}
-                                    <tr>
-                                        <td colspan="9">
-                                            <div><strong>Employee Name:</strong> {{ specific_offer.employee.employeeName }}</div>
-                                            <div><strong>Role:</strong> {{ specific_offer.employee.employeeRole }}</div>
-                                            <div><strong>Experience:</strong> {{ specific_offer.employee.employeeExp }} years</div>
-                                            <div><strong>Price:</strong> {{ specific_offer.price }}</div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                {% else %}
-                                    <tr>
-                                        <td colspan="9">No offers available for this service.</td>
-                                    </tr>
-                                {% endif %}
+                            {% if selected_service_id|stringformat:"s" == offer.serviceId|stringformat:"s" and specific_offers %}
+                            <tr>
+                                <td colspan="9" style="text-align: center;">
+                                    <div style="display: inline-block; width: 100%; max-width: 650px;"> <!-- Adjust max-width as needed -->
+                                        <table style="width: 100%; margin: auto;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: center;">Employee Name</th>
+                                                    <th style="text-align: center;">Role</th>
+                                                    <th style="text-align: center;">Experience</th>
+                                                    <th style="text-align: center;">Price</th>
+                                                    <th colspan="2" style="text-align: center;">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for specific_offer in specific_offers %}
+                                                <tr>
+                                                    <td style="text-align: center;">{{ specific_offer.employee.employeeName }}</td>
+                                                    <td style="text-align: center;">{{ specific_offer.employee.employeeRole }}</td>
+                                                    <td style="text-align: center;">{{ specific_offer.employee.employeeExp }} years</td>
+                                                    <td style="text-align: center;">{{ specific_offer.price }}</td>
+                                                    <td>
+                                                        <input type="button" id="accept-button-{{ specific_offer.offerId }}" class="button" value="Accept" onclick="handleOfferResponse(event, true, '{{ specific_offer.offerId }}')">
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" id="decline-button-{{ specific_offer.offerId }}" class="button decline" value="Decline" onclick="handleOfferResponse(event, false, '{{ specific_offer.offerId }}')">
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {% elif selected_service_id|stringformat:"s" == offer.serviceId|stringformat:"s" %}
+                                <tr>
+                                    <td colspan="9">No offers available for this service.</td>
+                                </tr>
                             {% endif %}
                             {% endfor %}
                             {% if not offers %}
@@ -67,5 +201,12 @@
         </div>
     </div>
 </div>
-
+<script>
+    function disableOtherButtons() {
+        var buttons = document.getElementsByClassName('offer-button');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+        }
+    }
+</script>
 {% endblock content %}

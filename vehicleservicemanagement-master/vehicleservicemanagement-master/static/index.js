@@ -82,6 +82,32 @@ function openCloseDropdown(event) {
 		}
 	}
 }
+// Add this to your index.js
+function handleSubmit(event, offerId, isAccepted) {
+    event.preventDefault();
+
+    fetch('https://agiledev3a.pythonanywhere.com/p3aplatform/api/post_service_offer_response', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'), // Assuming getCookie function is already defined in your index.js
+        },
+        body: JSON.stringify({ offerId: offerId, isAccepted: isAccepted })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.status === 'success') {
+            const statusText = isAccepted ? 'Accepted' : 'Declined';
+            event.target.innerText = statusText;
+            event.target.disabled = true;
+        } else {
+            alert('There was an error processing your request.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
 var ctx = document.getElementById('myChart')
 ctx.height = 500

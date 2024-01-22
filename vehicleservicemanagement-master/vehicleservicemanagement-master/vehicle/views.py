@@ -544,6 +544,7 @@ def customer_view_approved_request_view(request):
     # Fetch all offers
     response = requests.get(all_offers_url)
     offers = response.json() if response.status_code == 200 else []
+    print(offers)
 
     selected_service_id = request.GET.get('service_id')
     specific_offers = []
