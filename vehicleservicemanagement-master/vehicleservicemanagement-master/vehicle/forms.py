@@ -5,7 +5,7 @@ from . import models
 class CustomerUserForm(forms.ModelForm):
     class Meta:
         model=User
-        fields=['first_name','last_name','username','password']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password']
         widgets = {
         'password': forms.PasswordInput()
         }
@@ -13,7 +13,7 @@ class CustomerUserForm(forms.ModelForm):
 class CustomerForm(forms.ModelForm):
     class Meta:
         model=models.Customer
-        fields=['address','mobile','profile_pic']
+        fields=['email','mobile','profile_pic']
 
 
 class MechanicUserForm(forms.ModelForm):
