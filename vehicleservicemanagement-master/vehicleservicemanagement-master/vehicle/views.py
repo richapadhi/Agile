@@ -77,7 +77,9 @@ def customer_signup_view(request):
 
             if response.status_code == 200 or 201:
                 response_data = response.json()
+                print(response_data)
                 token = response_data.get("token")
+                print(token)
                 request.session['api_token'] = token
                 # Save the token as needed
             else:
