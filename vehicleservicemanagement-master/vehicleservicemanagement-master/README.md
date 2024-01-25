@@ -1,27 +1,26 @@
-# VEHICLE SERVICE MANAGEMENT
-![developer](https://img.shields.io/badge/Developed%20By%20%3A-4%20A-red)
+# SERVICE MANAGEMENT PORTAL
+![developer](https://img.shields.io/badge/Developed%20By%20%3A-TEAM%204A%20-red)
 
 ## FUNCTIONS
-## Customer
-- customer will signup and login into system
-- customer can make request for service of their vehicle by providing details (vehicle number, model, problem description etc.)
-- After Request approved by admin, customer can check cost, status of service
-- customer can delete request (Enquiry) if customer change their mind or not approved by admin (ONLY PENDING REQUEST CAN BE DELETED )
-- customer can check status of Request(Enquiry) that is Pending, Approved, Repairing, Repairing Done, Released
-- customer can check invoice details or repaired vehicles
-- customer can send feedback to admin
-- customer can see/edit their profile
+## User
+- User will signup and login into system
+- User can make request for service of their Employee by providing details (Project Information, Start Date, End Date, Work Location, Position Domain, Postion Role, Experience Level, Technology, Skills)
+- After Request is created, user can check the status of service and delete request (Enquiry) if user change their mind (ONLY PENDING REQUEST CAN BE DELETED )
+- User can check status of Request(Enquiry) that is Pending, or Completed
+- User can check the offers given by the provider
+- User can see/edit their profile
 ---
 ### Other Features
 - we can change theme of website day(white) and night(black)
 - if customer is deleted by admin then their request(Enquiry) will be deleted automatically
 
 ## HOW TO RUN THIS PROJECT
-- Install Python(3.7.6) (Dont Forget to Tick Add to Path while installing Python)
+- Install Python 3.9 and above (Dont Forget to Tick Add to Path while installing Python)
 - Open Terminal and Execute Following Commands :
 ```
-pip install django==3.0.5
+pip install django
 pip install django-widget-tweaks
+pip install -r requirements.txt
 
 ```
 - Download This Project Zip Folder and Extract it

@@ -112,11 +112,19 @@ def customer_login_view(request):
             print(f"Form is valid. Username: {username}, Password: {password}")  # Debugging print
 
             # External API call
-            api_response = requests.post('http://codexauthv2.onrender.com/api/login/', data={'username': username, 'password': password})
+            api_url = "http://codexauthv2.onrender.com/api/login/"
+            api_data = {
+                "username": username,
+                "password": password,
+            }
+
+            api_response = requests.post(api_url, json=api_data)
             print(f"API response status code: {api_response.status_code}")  # Debugging print
 
             if api_response.status_code == 200:
                 # Authenticate the user on the Django side
+                response_data = api_response.json()
+                print(response_data)
                 user = authenticate(request, username=username, password=password)
                 print(f"User from authenticate: {user}")  # Debugging print
 
@@ -654,7 +662,7 @@ def customer_view_approved_request_invoice_view(request):
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_add_request_view(request):
-    api_url = 'http://ec2-16-171-169-38.eu-north-1.compute.amazonaws.com:5000/api/mastertype/all'
+    api_url = 'http://ec2-13-49-44-175.eu-north-1.compute.amazonaws.com:5000/api/mastertype/all'
 
     # Make a request to the API
     response = requests.get(api_url)
