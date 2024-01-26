@@ -1,59 +1,128 @@
 {% extends 'vehicle/customerbase.html' %}
+{% load widget_tweaks %}
+
 {% block content %}
 
-	<!-- main content -->
-	<div class="wrapper">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>View Customer Requests</title>
+    <style media="screen">
+        .request-table-container {
+            max-width: 800px;
+            margin: 20px auto;
+            overflow-x: auto; /* For responsive table */
+        }
 
-<!-- ****** table  start ********** -->
-		<div class="row">
-			<div class="col-12 col-m-12 col-sm-12">
-				<div class="card">
-					<div class="card-header">
-						<h3 style="color:red; text-align:center" >Request Status
-						</h3>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-					</div>
-					<div class="card-content">
-						<table>
-							<thead>
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {background-color: #f9f9f9;}
+    </style>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.delete-link').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            var serviceId = this.getAttribute('data-service-id');
+            deleteService(serviceId);
+        });
+    });
+});
+
+function deleteService(serviceId) {
+    console.log('Deleting service with ID:', serviceId);
+    if (confirm('Are you sure you want to delete this service?')) {
+        fetch(`http://ec2-54-166-224-107.compute-1.amazonaws.com:9198/api/v1/serviceManagement/${serviceId}`, {
+            method: 'DELETE',
+
+        })
+        .then(response => {
+    if (!response.ok) {
+        throw new Error(`Failed to delete the service. Server returned ${response.status} - ${response.statusText}`);
+    }
+    else {
+        location.reload();
+
+    }
+
+})
+.catch(error => {
+    console.error('Error:');
+    alert('Error deleting service');
+});
+    }
+}
+
+</script>
+
+
+</head>
+<body>
+    <div class="request-table-container">
+        <h2 style="text-align:center;">Customer Requests</h2>
+        <table id="requestsTable">
+            <thead>
                 <tr>
-                  <th>Project Information</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Work Location</th>
-                  <th>Position Domain</th>
-                  <th>Postion Role</th>
-                  <th>Experience Level</th>
-                  <th>Technology</th>
-                  <th>Skills</th>
-								  <th>Delete Enquiry</th>
-
+                    <th>Service ID</th>
+                    <th>Project Information</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Work Location</th>
+                    <th>Master Agreement Name</th>
+                    <th>Domain</th>
+                    <th>Role</th>
+                    <th>Experience</th>
+                    <th>Technology</th>
+                    <th>Skill</th>
+                    <th>Action</th>
                 </tr>
-							</thead>
-							<tbody>
-                {% for enq in enquiries %}
+            </thead>
+            <tbody>
+                {% for enquiry in enquiries %}
                 <tr>
-                    <td>{{ enq.projectInformation }}</td>
-                    <td>{{ enq.startDate }}</td>
-                    <td>{{ enq.endDate }}</td>
-                    <td>{{ enq.workLocation }}</td>
-                    <td>{{ enq.positionDomain }}</td>
-                    <td>{{ enq.positionRole }}</td>
-                    <td>{{ enq.experienceLevel }}</td>
-                    <td>{{ enq.technology }}</td>
-                    <td>{{ enq.skill }}</td>
-                    <td><a style="color:red; text-decoration:none;font-size:25px;"href="{% url 'customer-delete-request' enq.id  %}">&#10008;</a></td>
+                    <td>{{ enquiry.serviceId }}</td>
+                    <td>{{ enquiry.projectInfo }}</td>
+                    <td>{{ enquiry.startDate }}</td>
+                    <td>{{ enquiry.endDate }}</td>
+                    <td>{{ enquiry.workLocation }}</td>
+                    <td>{{ enquiry.masterAgreementName }}</td>
+                    <td>{{ enquiry.domain }}</td>
+                    <td>{{ enquiry.role }}</td>
+                    <td>{{ enquiry.experience }}</td>
+                    <td>{{ enquiry.technology }}</td>
+                    <td>{{ enquiry.skill }}</td>
+                    <td><a href="#" class="delete-link" data-service-id="{{ enquiry.serviceId }}">Delete</a></td>
                 </tr>
+                {% empty %}
+                <tr><td colspan="12">No requests found.</td></tr>
                 {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
 
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-<!-- ****** table start ********** -->
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-	</div>
-	<!-- end main content -->
+<!-- Replace the following script block with the provided one -->
+<!-- ... Rest of your HTML ... -->
+
+
+
+<!-- ... Rest of your HTML ... -->
+
+
 {% endblock content %}

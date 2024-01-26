@@ -28,7 +28,7 @@ SECRET_KEY = 'ftxnh_7475z^joy_*l9t*qnqow!@)y#(541^w1=(8--=3g#4*d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '13.53.177.158', '172.31.35.29', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '13.53.177.158', '172.31.35.29', '127.0.0.1','54.166.224.107','172.31.41.115']
 
 
 # Application definition
@@ -42,17 +42,71 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'vehicle',
     'widget_tweaks',
+    'corsheaders',
 ]
-
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost',
+    'localservername',
+    'http://localservername',
+    '127.0.0.1'
+)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Placed here for CORS handling
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # ... Other middleware if applicable
 ]
+
+MIDDLEWARE_CLASSES = (
+'django.contrib.sessions.middleware.SessionMiddleware',
+'corsheaders.middleware.CorsMiddleware',
+'django.middleware.common.CommonMiddleware',
+'django.middleware.csrf.CsrfViewMiddleware',
+'django.contrib.auth.middleware.AuthenticationMiddleware',
+'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+'django.contrib.messages.middleware.MessageMiddleware',
+'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    # Add other allowed origins as needed
+]
+# Or if you want to allow specific domains
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://ec2-54-166-224-107.compute-1.amazonaws.com:9198",
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
 
 ROOT_URLCONF = 'vehicleservicemanagement.urls'
 
@@ -83,9 +137,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'USER': 'sqlite3',
-        'PASSWORD': '123',
-        'HOST': 'localhost',   # Set to your PostgreSQL server's host
-        'PORT': '5432',        # Set to your PostgreSQL server's port
+        #'PASSWORD': '123',
+        #'HOST': 'localhost',   # Set to your PostgreSQL server's host
+        #'PORT': '5432',        # Set to your PostgreSQL server's port
     }
 }
 

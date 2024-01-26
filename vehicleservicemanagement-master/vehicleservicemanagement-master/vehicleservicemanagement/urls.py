@@ -5,6 +5,8 @@ from django.contrib import admin
 from django.urls import path
 from vehicle import views
 from django.contrib.auth.views import LoginView,LogoutView
+from django.urls import path
+#from vehicle.views import delete_enquiry
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,7 +18,7 @@ urlpatterns = [
 
     path('customersignup', views.customer_signup_view,name='customersignup'),
 
-    path('customerlogin', views.customer_login_view,name='customerlogin'),
+    path('customerlogin', LoginView.as_view(template_name='vehicle/customerlogin.html'),name='customerlogin'),
     path('adminlogin', LoginView.as_view(template_name='vehicle/adminlogin.html'),name='adminlogin'),
 
 
@@ -39,7 +41,7 @@ urlpatterns = [
     path('admin-add-request',views.admin_add_request_view,name='admin-add-request'),
     path('admin-approve-request',views.admin_approve_request_view,name='admin-approve-request'),
     path('approve-request/<int:pk>', views.approve_request_view,name='approve-request'),
-    
+
     path('admin-view-service-cost',views.admin_view_service_cost_view,name='admin-view-service-cost'),
     path('update-cost/<int:pk>', views.update_cost_view,name='update-cost'),
 
@@ -58,12 +60,14 @@ urlpatterns = [
     path('edit-customer-profile', views.edit_customer_profile_view,name='edit-customer-profile'),
     path('customer-feedback', views.customer_feedback_view,name='customer-feedback'),
     path('customer-invoice', views.customer_invoice_view,name='customer-invoice'),
-    path('customer-view-request',views.customer_view_request_view,name='customer-view-request'),
+    path('customer-view-request/',views.customer_view_request_view,name='customer-view-request'),
     path('customer-edit-request/<int:pk>', views.customer_delete_request_view,name='customer-edit-request'),
     path('customer-delete-request/<int:pk>', views.customer_delete_request_view,name='customer-delete-request'),
     path('customer-view-approved-request',views.customer_view_approved_request_view,name='customer-view-approved-request'),
     path('customer-view-approved-request-invoice',views.customer_view_approved_request_invoice_view,name='customer-view-approved-request-invoice'),
-
+    #path('delete-enquiry/<int:service_id>/', views.delete_enquiry, name='delete_enquiry'),
+    path('api/v1/serviceManagement/<int:service_id>', views.delete_service, name='delete_service'),
+    path('delete-services/<int:service_id>', views.delete_services, name='delete_services'),
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('logout', LogoutView.as_view(template_name='vehicle/index.html'),name='logout'),
 

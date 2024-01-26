@@ -154,7 +154,7 @@
   $(document).ready(function () {
     // Load master agreement type dropdown
     $.ajax({
-      url: 'http://ec2-13-49-44-175.eu-north-1.compute.amazonaws.com:5000/api/mastertype/all',
+      url: 'http://ec2-13-49-44-175.eu-north-1.compute.amazonaws.com:5000/api/mastertype/all',  // Update with your actual URL
       type: 'GET',
       success: function (data) {
         var masterAgreementDropdown = $('#masterAgreementType');
