@@ -170,10 +170,14 @@
                                                     <td style="text-align: center;">{{ specific_offer.employee.employeeExp }} years</td>
                                                     <td style="text-align: center;">{{ specific_offer.price }}</td>
                                                     <td>
-                                                        <input type="button" id="accept-button-{{ specific_offer.offerId }}" class="button" value="Accept" onclick="handleOfferResponse(event, true, '{{ specific_offer.offerId }}')">
-                                                    </td>
-                                                    <td>
-                                                        <input type="button" id="decline-button-{{ specific_offer.offerId }}" class="button decline" value="Decline" onclick="handleOfferResponse(event, false, '{{ specific_offer.offerId }}')">
+                                                        {% if specific_offer.isAccepted == True %}
+                                                            <input type="button" class="button disabled" value="Accepted" disabled>
+                                                        {% elif specific_offer.isAccepted == False %}
+                                                            <input type="button" class="button decline disabled" value="Declined" disabled>
+                                                        {% else %}
+                                                            <input type="button" id="accept-button-{{ specific_offer.offerId }}" class="button" value="Accept" onclick="handleOfferResponse(event, true, '{{ specific_offer.offerId }}')">
+                                                            <input type="button" id="decline-button-{{ specific_offer.offerId }}" class="button decline" value="Decline" onclick="handleOfferResponse(event, false, '{{ specific_offer.offerId }}')">
+                                                        {% endif %}
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
