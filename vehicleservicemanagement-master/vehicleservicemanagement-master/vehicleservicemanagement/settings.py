@@ -188,6 +188,7 @@ STATIC_DIR,
  ]
 
 LOGIN_REDIRECT_URL='/afterlogin'
+LOGOUT_REDIRECT_URL = '/'  # or the path to your index view
 
 #for contact us give your gmail id and password
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'

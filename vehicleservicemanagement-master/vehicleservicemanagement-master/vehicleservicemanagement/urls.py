@@ -7,7 +7,9 @@ from vehicle import views
 from django.contrib.auth.views import LoginView,LogoutView
 from django.urls import path
 #from vehicle.views import delete_enquiry
-
+class LogoutViewWithGet(LogoutView):
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
 urlpatterns = [
     path('admin/', admin.site.urls),
 
