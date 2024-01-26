@@ -14,7 +14,7 @@
 	--dark-background: #23242D;
 	--dark-second-background: #181818;
 
-	--custom-color: #ea4c88;
+	--custom-color: #893168;
 }
 
 .light {
@@ -69,13 +69,15 @@ body {
 .navbar {
 	display: flex;
 	flex-direction: row;
-	background-color: #ea4c88 !important;
+	background-color: #893168 !important;
 	position: fixed;
 	top: 0;
 	right: 0;
 	left: 0;
 	z-index: 101;
 	box-shadow: rgba(0,0,0,0.12) 0px 1px 4px 1px;
+	color: white;
+
 }
 
 .navbar-nav {
