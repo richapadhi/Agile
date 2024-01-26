@@ -582,10 +582,6 @@ def delete_service(request, service_id):
         return JsonResponse({'error': str(e)}, status=500)
 
 
-def delete_services(request, service_id):
-    service = get_object_or_404(Service, service_id=service_id)
-    service.delete()
-    return JsonResponse({'message': f'Service with ID {service_id} deleted successfully'})
 
 
 @login_required(login_url='customerlogin')
@@ -665,10 +661,11 @@ def customer_add_request_view(request):
             start_date = enquiry.cleaned_data['startDate']
             end_date = enquiry.cleaned_data['endDate']
             work_location = enquiry.cleaned_data['workLocation']
-            master_agreements = enquiry.cleaned_data['masterAgreementType']
+            master_agreement_type = enquiry.cleaned_data['masterAgreementType']
             # Debug prints
             print("Selected Domain ID:", enquiry.cleaned_data['domain'])
             print("Selected Role Name:", enquiry.cleaned_data['roleName'])
+            print("Selected Master Agreement:", enquiry.cleaned_data['masterAgreementType'])
 
             domain = enquiry.cleaned_data['domain']
             role = enquiry.cleaned_data['roleName']
@@ -687,7 +684,7 @@ def customer_add_request_view(request):
                 "startDate": start_date.strftime('%Y-%m-%d'),  # Convert to string
                 "endDate": end_date.strftime('%Y-%m-%d'),  # Convert to string
                 "workLocation": work_location,
-                "masterAgreementName": master_agreements,
+                "masterAgreementName": master_agreement_type,
                 "domain": domain,
                 "role": role,
                 "experience": experience_level,
@@ -701,7 +698,7 @@ def customer_add_request_view(request):
                 startDate=start_date,
                 endDate=end_date,
                 workLocation=work_location,
-                master_agreements=master_agreements,
+                master_agreements=master_agreement_type,
                 positionDomain=domain,
                 positionRole=role,
                 experienceLevel=experience_level,

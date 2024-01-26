@@ -67,7 +67,6 @@ urlpatterns = [
     path('customer-view-approved-request-invoice',views.customer_view_approved_request_invoice_view,name='customer-view-approved-request-invoice'),
     #path('delete-enquiry/<int:service_id>/', views.delete_enquiry, name='delete_enquiry'),
     path('api/v1/serviceManagement/<int:service_id>', views.delete_service, name='delete_service'),
-    path('delete-services/<int:service_id>', views.delete_services, name='delete_services'),
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('logout', LogoutView.as_view(template_name='vehicle/index.html'),name='logout'),
 

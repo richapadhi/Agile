@@ -47,6 +47,12 @@ class RequestForm(forms.Form):
     technology = forms.CharField(label='Technology', widget=forms.TextInput(attrs={'class': 'form-input'}), required=True)
     skill = forms.CharField(label='Skills', widget=forms.TextInput(attrs={'class': 'form-input'}), required=True)
 
+    def clean_masterAgreementType(self):
+        # Get the raw value
+        master_agreement_type = self.cleaned_data.get('masterAgreementType', '')
+
+        return f'MAT{master_agreement_type}'
+
     @classmethod
     def set_api_data(cls, api_data):
         choices = [(str(item['masterAgreementTypeId']), item['masterAgreementTypeName']) for item in api_data]

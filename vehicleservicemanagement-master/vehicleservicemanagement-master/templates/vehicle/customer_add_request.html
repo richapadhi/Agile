@@ -82,8 +82,9 @@
         <label for="masterAgreementType">Master Agreement Type:</label>
         <select id="masterAgreementType" name="masterAgreementType" class="form-input">
           {% for master_agreement in context.master_agreements %}
-            <option value="{{ master_agreement.masterAgreementTypeId }}">
-              {{ master_agreement.masterAgreementTypeName }}
+            <option value="{{ 'MAT'|add:master_agreement.masterAgreementTypeId }}">
+              <!--MAT{{ master_agreement.masterAgreementTypeName }}-->
+                MAT{{ master_agreement.masterAgreementTypeId }}
             </option>
           {% endfor %}
         </select>
