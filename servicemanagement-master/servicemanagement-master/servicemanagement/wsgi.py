@@ -1,5 +1,5 @@
 """
-WSGI config for vehicleservicemanagement project.
+WSGI config for servicemanagement project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vehicleservicemanagement.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'servicemanagement.settings')
 
 application = get_wsgi_application()
