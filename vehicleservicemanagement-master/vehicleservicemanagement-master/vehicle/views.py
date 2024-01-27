@@ -58,15 +58,19 @@ def customer_signup_view(request):
             }
 
             response = requests.post(api_url, json=api_data)
-            print(response)
+            print("Response:", response)
 
-            if response.status_code == 200 or 201:
-                response_data = response.json()
-                print(response_data)
-                token = response_data.get("token")
-                print(token)
-                request.session['api_token'] = token
-                # Save the token as needed
+            if response.status_code in [200, 201]:
+                try:
+                    response_data = response.json()
+                    print(response_data)
+                    token = response_data.get("token")
+                    print(token)
+                    request.session['api_token'] = token
+                except json.JSONDecodeError:
+                    print("Invalid JSON response")
+                    messages.error(request, 'Invalid JSON response from server.')
+                    return render(request, 'vehicle/customersignup.html', context=mydict)
             else:
                 if response.status_code == 500:
                     print("Username already exists or invalid data sent.")  # Debugging line
@@ -75,7 +79,6 @@ def customer_signup_view(request):
                     messages.error(request, 'Server error occurred during registration')
                 else:
                     messages.error(request, 'An unknown error occurred during registration.')
-
                 return render(request, 'vehicle/customersignup.html', context=mydict)
 
             return HttpResponseRedirect('customerlogin')
