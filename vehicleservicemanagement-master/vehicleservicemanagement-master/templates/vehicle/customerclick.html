@@ -1,49 +1,157 @@
 <!DOCTYPE html>
-{% load static %}
-<html lang="en" dir="ltr">
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+  }
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  body, h1, p, a {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+  }
 
-  <style media="screen">
-    .jumbotron {
-      margin-top: 0px;
-      margin-bottom: 0px;
-      text-align: center; /* Centers content inside jumbotron */
-    }
+  .navbar {
+    background-color: #4A1942;
+    color: #EAEAEA;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-    .jumbotron h1 {
-      text-align: center;
-    }
+  .navbar a, .navbar span {
+    color: #EAEAEA;
+    text-decoration: none;
+    padding: 8px 15px;
+    transition: color 0.3s ease;
+  }
 
-    .btn-custom {
-      background-color: #ea4c88 !important;
-      border-color: #ea4c88 !important;
-      color: white !important;
-    }
-  </style>
+  .navbar a:hover, .navbar span:hover {
+    color: #893168;
+  }
 
+  .header {
+    background: linear-gradient(135deg, #893168 0%, #4A1942 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    background-color: #2E1C2B;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    transform: scale(3);
+    z-index: 0;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .header:hover::before {
+    transform: scale(3.2) translate(-20px, 20px);
+  }
+
+  .header h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header p {
+    font-size: 1.5rem;
+    margin: 20px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn {
+    background: linear-gradient(135deg, #893168, #4A1942);
+    color: #EAEAEA;
+    padding: 15px 30px;
+    border: none;
+    margin: 10px;
+    border-radius: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(137, 49, 104, 0.4);
+  }
+
+
+  .features {
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+    position: relative;
+  }
+
+  .feature {
+    text-align: center;
+    padding: 0 20px;
+    flex: 1;
+    transition: transform 0.3s ease;
+  }
+
+  .feature:hover {
+    transform: translateY(-10px);
+  }
+
+  .feature-icon {
+    font-size: 48px;
+    color: #4A1942;
+    margin-bottom: 20px;
+  }
+
+  .footer {
+    background-color: #2E1C2B;
+    color: #EAEAEA;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .footer p {
+    margin: 0;
+  }
+</style>
 </head>
-
 <body>
-  {% include "vehicle/navbar.html" %}
-  <br><br>
-  <br><br>
-  <div class="jumbotron" style="margin-bottom:0px;">
-    <br><br><br>
-    <h1 class="display-4">Hello</h1>
-    <p class="lead">Welcome to Service Management Portal</p>
-    <hr class="my-4">
-    <p>You can access various features after Login.</p>
-    <p class="lead">
-      <a class="btn btn-custom btn-lg" href="customersignup" role="button">Sign Up</a>
-      <a class="btn btn-custom btn-lg" href="customerlogin" role="button">Login</a>
-    </p>
-  </div>
-</body>
 
-</html>
+<div class="navbar">
+  <span>Service Management</span>
+  <a href="#about">About Us</a>
+</div>
+
+<div class="header">
+  <h1>Welcome</h1>
+  <p>Discover Our Premier Service Management Solutions</p>
+  <a href="/customersignup" class="btn">Sign Up</a>
+  <a href="?customerlogin" class="btn">Login</a>
+</div>
+
+<div class="features">
+  <div class="feature">
+    <div class="feature-icon">🔧</div>
+    <h2>Easy to Use</h2>
+    <p>Efficient management tools at your fingertips.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">💡</div>
+    <h2>Innovative</h2>
+    <p>State-of-the-art technology to stay ahead.</
