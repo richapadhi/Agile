@@ -2,35 +2,137 @@
 {% block content %}
 <style>
     .button {
-        background-color: green;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        transition: background-color 0.3s, opacity 0.3s;
-        border-radius: 10px; /* Rounded edges */
+    background-color: #2E1C2B; /* Base color to match the UI buttons */
+    color: #EAEAEA;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    display: inline-block;
+    margin: 0 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+    background-color: #5E2750;
+    color: #FFF;
+}
+
+.button:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.button.decline {
+    background-color: #EAEAEA; /* Neutral color for less prominence */
+    color: #4A1942; /* Dark color for the text to maintain legibility */
+    border: 2px solid #4A1942; /* Solid border to add definition */
+}
+
+.button.decline:hover {
+    background-color: #D8D8D8; /* Slightly darker on hover */
+    color: #4A1942; /* Maintain text color on hover */
+}
+
+.button.decline:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+}
+
+.button.disabled {
+    background-color: #A8A8A8;
+    color: #FFF;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.button.disabled:hover {
+    background-color: #A8A8A8;
+    color: #FFF;
+}
+
+
+
+    .request-table-container {
+        max-width: 100%;
+        margin: 20px auto;
+        overflow-x: auto; /* For responsive table */
+        border-radius: 15px; /* Rounded corners for the table container */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
     }
 
-    .button:hover, .button.disabled:hover {
-        background-color: #005700; /* Darker shade for hover effect */
-        opacity: 0.8;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden; /* Hide overflowing content within the table */
+        border-radius: 15px; /* Rounded corners for the table */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
     }
 
-    .button.decline {
-        background-color: red;
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
     }
 
-    .button.decline:hover {
-        background-color: #950000; /* Darker shade for hover effect */
+    th {
+        background: linear-gradient(45deg, #4A1942, #893168); /* Gradient background for header */
+        color: #EAEAEA; /* Text color for header */
     }
 
-    .button.disabled {
-        background-color: grey;
-        cursor: default;
+    tr {
+        transition: background 0.3s ease; /* Smooth transition for row background color */
     }
 
-    .button.disabled:hover {
-        opacity: 1; /* No transparency for disabled buttons */
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #EAEAEA; /* Background color on hover */
+    }
+    .card-header h3 {
+        color: #4A1942; /* Change this to the desired font color */
+        text-align: center;
+    }
+     table a {
+        display: inline-block;
+        width: 180px;
+        padding: 10px 20px;
+        border: 2px solid #2E1C2B;
+        border-radius: 20px;
+        background-color: #2E1C2B;
+        color: #EAEAEA;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px; /* Set the desired font size */
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    table a:hover {
+        background-color: #893168;
+        border-color: #893168;
+        color: #EAEAEA;
+    }
+
+    /* Display Accept and Decline buttons side by side */
+    table .button-container {
+        display: flex;
+    }
+
+    /* Style Accept and Decline buttons with smaller font size */
+    table .button {
+        margin-right: 5px;
+        font-size: 12px; /* Set the desired font size */
+    }
+     .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
     }
 </style>
 <script>
@@ -116,7 +218,7 @@
         <div class="col-12 col-m-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 style="color:red; text-align:center">Offers</h3>
+                    <h3 style="color:#893168; text-align:center">Offers</h3>
                 </div>
                 <div class="card-content">
                     <table>
@@ -170,6 +272,7 @@
                                                     <td style="text-align: center;">{{ specific_offer.employee.employeeExp }} years</td>
                                                     <td style="text-align: center;">{{ specific_offer.price }}</td>
                                                     <td>
+                                                        <div class="button-container">
                                                         {% if specific_offer.isAccepted == True %}
                                                             <input type="button" class="button disabled" value="Accepted" disabled>
                                                         {% elif specific_offer.isAccepted == False %}
@@ -178,9 +281,11 @@
                                                             <input type="button" id="accept-button-{{ specific_offer.offerId }}" class="button" value="Accept" onclick="handleOfferResponse(event, true, '{{ specific_offer.offerId }}')">
                                                             <input type="button" id="decline-button-{{ specific_offer.offerId }}" class="button decline" value="Decline" onclick="handleOfferResponse(event, false, '{{ specific_offer.offerId }}')">
                                                         {% endif %}
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
+
                                             </tbody>
                                         </table>
                                     </div>
