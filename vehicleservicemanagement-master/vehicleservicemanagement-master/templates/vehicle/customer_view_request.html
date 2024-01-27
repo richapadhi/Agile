@@ -10,29 +10,67 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>View Customer Requests</title>
     <style media="screen">
-        .request-table-container {
-            max-width: 800px;
-            margin: 20px auto;
-            overflow-x: auto; /* For responsive table */
-        }
+    .request-table-container {
+        max-width: 1400px;
+        margin: 50px auto;
+        overflow-x: auto; /* For responsive table */
+        border-radius: 15px; /* Rounded corners for the table container */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px; /* Add margin at the bottom of the heading */
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden; /* Hide overflowing content within the table */
+        border-radius: 15px; /* Rounded corners for the table */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
 
-        tr:nth-child(even) {background-color: #f9f9f9;}
-    </style>
+    th {
+        background: linear-gradient(45deg, #4A1942, #893168); /* Gradient background for header */
+        color: #EAEAEA; /* Text color for header */
+    }
+
+    tr {
+        transition: background 0.3s ease; /* Smooth transition for row background color */
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #EAEAEA; /* Background color on hover */
+    }
+
+    .delete-link {
+        color: #EAEAEA; /* Text color */
+        text-decoration: none;
+        padding: 10px 20px; /* Add padding for better appearance */
+        border-radius: 25px; /* Rounded corners */
+        background: linear-gradient(45deg, #4A1942, #893168); /* Gradient background */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+        transition: background 0.3s ease, color 0.3s ease; /* Smooth transition for color and background changes */
+        display: inline-block; /* Make it inline-block to enable padding and border-radius */
+    }
+
+    .delete-link:hover {
+        color: #EAEAEA; /* Text color on hover */
+        background: linear-gradient(45deg, #2E1C2B, #893168); /* Gradient background on hover */
+    }
+</style>
+
     <script>
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.delete-link').forEach(function (link) {
