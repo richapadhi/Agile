@@ -1,113 +1,140 @@
 <!DOCTYPE html>
-{% load widget_tweaks %}
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <style media="screen">
-      body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background: linear-gradient(to right, #b92b27, #1565c0)
-}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Management - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+     body {
+    background: linear-gradient(to right, #EAEAEA, #4A1942);
 
-.box {
-    width: 500px;
-    padding: 40px;
+
+  .navbar {
+    background: linear-gradient(135deg, #4A1942, #2E1C2B);
+    color: #EAEAEA;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .navbar a, .navbar span {
+    color: #EAEAEA;
+    text-decoration: none;
+    padding: 8px 16px;
+    transition: color 0.3s ease;
+  }
+
+  .navbar a:hover, .navbar span:hover {
+    color: #CBA6C3;
+  }
+
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    padding-top: 10vh;
+  }
+
+  .overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    background: #191919;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(58, 11, 42, 0.85);
+  }
 
+  .login-box {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 60px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
     text-align: center;
-    transition: 0.25s;
-    margin-top: 100px
-}
+    width: 400px;
+    color: #fff;
+  }
 
-.box input[type="text"],
-.box input[type="password"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #3498db;
-    padding: 10px 10px;
-    width: 250px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s
-}
-
-.box h1 {
-    color: white;
+  .login-box h1 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
     text-transform: uppercase;
-    font-weight: 500
-}
+    letter-spacing: 1px;
+  }
 
-.box input[type="text"]:focus,
-.box input[type="password"]:focus {
-    width: 300px;
-    border-color: #2ecc71
-}
+  .login-box p {
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+  }
 
-.box input[type="submit"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #2ecc71;
-    padding: 14px 40px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s;
-    cursor: pointer
-}
+  .login-box input {
+    width: calc(100% - 20px);
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+  }
 
-.box input[type="submit"]:hover {
-    background: #2ecc71
-}
+  .login-box button {
+    background: linear-gradient(135deg, #893168, #4A1942);
+    color: #EAEAEA;
+    padding: 15px 30px;
+    border: none;
+    margin: 10px;
+    border-radius: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+  }
 
-p {
-  text-align: center;
+  .login-box button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(137, 49, 104, 0.4);
+  }
+</style>
+</head>
+<body>
 
-}
-    </style>
-  </head>
-  <body>
-    {% include "vehicle/navbar.html" %}
-    <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <form class="box" method="post">
-                    {% csrf_token %}
-                    <h1>Customer Login</h1>
-                    <p class="text-muted"> Please enter your login and password!</p>
-                        <input type="text" name="username" class="form-control" placeholder="Username">
-                        <input type="password" name="password" class="form-control" placeholder="Password">
-                     <input type="submit" name="" value="Login">
+  {% include "vehicle/navbar.html" %}
 
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
+<div class="login-container">
+  <div class="overlay"></div>
+  <div class="login-box">
+    <h1>Login</h1>
+    <p>Please enter your login and password!</p>
+
+    <!-- Your Form Here -->
+    <form class="box" method="post">
+      {% csrf_token %}
+      <input type="text" name="username" class="form-control" placeholder="Username">
+      <input type="password" name="password" class="form-control" placeholder="Password">
+        <button type="submit">Login</button>
+    </form>
+
     {% if messages %}
-<script type="text/javascript">
-window.onload = function() {
-    {% for message in messages %}
-        alert("{{ message }}");
-    {% endfor %}
-}
-</script>
-{% endif %}
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br>
-  </body>
+      <script type="text/javascript">
+      window.onload = function() {
+        {% for message in messages %}
+          alert("{{ message }}");
+        {% endfor %}
+      }
+      </script>
+    {% endif %}
+  </div>
+</div>
+
+</body>
 </html>

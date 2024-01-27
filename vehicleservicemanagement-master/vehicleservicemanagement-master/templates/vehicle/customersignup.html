@@ -1,144 +1,127 @@
 <!DOCTYPE html>
-{% load widget_tweaks %}
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
-    <title></title>
-
-
-
-
+    <title>Service Management - Signup</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
     <style media="screen">
-      body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background: linear-gradient(to right, #b92b27, #1565c0)
-}
+        body {
+            background: linear-gradient(to right, #EAEAEA, #4A1942);
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            height: 100vh;
+            color: #EAEAEA;
+        }
 
-.box {
-    width: 500px;
-    padding: 40px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background: #191919;
-    ;
-    text-align: center;
-    transition: 0.25s;
-    margin-top: 100px
-}
+        .navbar {
+            background: linear-gradient(135deg, #4A1942, #2E1C2B);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.box input[type="text"],
-.box input[type="password"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #3498db;
-    padding: 10px 10px;
-    width: 250px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s
-}
+        .navbar a, .navbar span {
+            color: #EAEAEA;
+            text-decoration: none;
+            padding: 8px 16px;
+            transition: color 0.3s ease;
+        }
 
-.box h1 {
-    color: white;
-    text-transform: uppercase;
-    font-weight: 500
-}
+        .navbar a:hover, .navbar span:hover {
+            color: #CBA6C3;
+        }
 
-.box input[type="text"]:focus,
-.box input[type="password"]:focus {
-    width: 300px;
-    border-color: #2ecc71
-}
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            position: relative;
+            padding: 15vh 0; /* Added padding to ensure some space around the box */
+        }
 
-.box input[type="submit"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #2ecc71;
-    padding: 14px 40px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s;
-    cursor: pointer
-}
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(58, 11, 42, 0.85);
+        }
 
-.box input[type="submit"]:hover {
-    background: #2ecc71
-}
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            width: 500px;
+            position: relative;
+            z-index: 2;
+            height: auto;
+        }
 
-.forgot {
-    text-decoration: underline
-}
+        .login-box h1 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #EAEAEA;
+            letter-spacing: 1px;
+        }
 
-.social-circle li a {
-    display: inline-block;
-    position: relative;
-    margin: 0 auto 0 auto;
-    border-radius: 50%;
-    text-align: center;
-    width: 50px;
-    height: 50px;
-    font-size: 20px
-}
+        .login-box input {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #fff;
+            background: transparent;
+            color: #EAEAEA;
+            font-size: 1rem;
+        }
 
-.social-circle li i {
-    margin: 0;
-    line-height: 50px;
-    text-align: center
-}
+        .login-box button {
+            background: linear-gradient(135deg, #893168, #4A1942);
+            color: #EAEAEA;
+            padding: 15px 30px;
+            border: none;
+            margin: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
 
-.social-circle li a:hover i,
-.triggeredHover {
-    transform: rotate(360deg);
-    transition: all 0.2s
-}
-
-.social-circle i {
-    color: #fff;
-    transition: all 0.8s;
-    transition: all 0.8s
-}
-p {
-  text-align: center;
-
-}
+        .login-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(137, 49, 104, 0.4);
+        }
     </style>
-  </head>
+</head>
   <body>
     {% include "vehicle/navbar.html" %}
-    <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <form class="box" method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                    <h1>USER SIGNUP</h1>
-                    <p class="text-muted"> Please enter your details to create account !</p>
-                      {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
-                        {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
-                          {% render_field userForm.username class="form-control" placeholder="Username" %}
-                            {% render_field customerForm.email class="form-control" placeholder="Email Address" %}
-                              {% render_field userForm.password class="form-control" placeholder="Password" %}
-                                {% render_field customerForm.mobile class="form-control" placeholder="Mobile" %}
-                                  {% render_field customerForm.profile_pic class="form-control" placeholder="Profile pic" %}
-
-                     <input type="submit" name="" value="Create">
-
+<div class="login-container">
+    <div class="overlay"></div>
+    <div class="login-box">
+                <form method="post" enctype="multipart/form-data">
+                    <h1>SIGNUP</h1>
+                    {% csrf_token %}
+                    <!-- Replace with your server-side templating token for CSRF -->
+                    <input type="text" placeholder="First Name" name="first_name" required>
+                    <input type="text" placeholder="Last Name" name="last_name" required>
+                    <input type="text" placeholder="Username" name="username" required>
+                    <input type="email" placeholder="Email Address" name="email" required>
+                    <input type="password" placeholder="Password" name="password" required>
+                    <input type="tel" placeholder="Mobile" name="mobile" required>
+                    <input type="file" name="profile_pic" required>
+                    <button type="submit">Create</button>
                 </form>
             </div>
         </div>
-    </div>
-</div>
+
+
     {% if messages %}
     <script type="text/javascript">
     window.onload = function() {
@@ -148,10 +131,5 @@ p {
     }
     </script>
     {% endif %}
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br>
   </body>
 </html>

@@ -1,7 +1,11 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, reverse
 from . import forms, models
 from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
+from django.contrib import messages  # Import the messages module
+
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
 import requests
@@ -24,22 +28,100 @@ def customerclick_view(request):
 def customer_signup_view(request):
     userForm = forms.CustomerUserForm()
     customerForm = forms.CustomerForm()
-    mydict = {'userForm': userForm, 'customerForm': customerForm}
+    mydict = {'userForm': userForm, 'customerForm': customerForm, 'error_message': ''}
+
     if request.method == 'POST':
         userForm = forms.CustomerUserForm(request.POST)
         customerForm = forms.CustomerForm(request.POST, request.FILES)
+
         if userForm.is_valid() and customerForm.is_valid():
-            user = userForm.save()
+            user = userForm.save(commit=False)
             user.set_password(user.password)
+            user.email = userForm.cleaned_data.get('email')  # Ensure email is set
             user.save()
+
             customer = customerForm.save(commit=False)
             customer.user = user
             customer.save()
-            my_customer_group = Group.objects.get_or_create(name='CUSTOMER')
-            my_customer_group[0].user_set.add(user)
-        return HttpResponseRedirect('customerlogin')
+
+            my_customer_group, created = Group.objects.get_or_create(name='CUSTOMER')
+            my_customer_group.user_set.add(user)
+
+            # External API call
+            api_url = "http://codexauthv2.onrender.com/api/register/"
+            api_data = {
+                "username": user.username,
+                "email": user.email,
+                "password": request.POST.get('password'),
+                "role": "Base User",
+                "provider": "Team 4a"
+            }
+
+            response = requests.post(api_url, json=api_data)
+            print(response)
+
+            if response.status_code == 200 or 201:
+                response_data = response.json()
+                print(response_data)
+                token = response_data.get("token")
+                print(token)
+                request.session['api_token'] = token
+                # Save the token as needed
+            else:
+                if response.status_code == 500:
+                    print("Username already exists or invalid data sent.")  # Debugging line
+                    messages.error(request, 'Username already exists or invalid data sent.')
+                elif response.status_code == 400:
+                    messages.error(request, 'Server error occurred during registration')
+                else:
+                    messages.error(request, 'An unknown error occurred during registration.')
+
+                return render(request, 'vehicle/customersignup.html', context=mydict)
+
+            return HttpResponseRedirect('customerlogin')
+
     return render(request, 'vehicle/customersignup.html', context=mydict)
 
+def customer_login_view(request):
+    # Initialize the form for a GET request
+    form = AuthenticationForm()
+
+    if request.method == 'POST':
+        print("Processing a POST request")  # Debugging print
+
+        # Process the form data for a POST request
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            print(f"Form is valid. Username: {username}, Password: {password}")  # Debugging print
+
+            # External API call
+            api_response = requests.post('http://codexauthv2.onrender.com/api/login/', data={'username': username, 'password': password})
+            print(f"API response status code: {api_response.status_code}")  # Debugging print
+
+            if api_response.status_code == 200:
+                # Authenticate the user on the Django side
+                user = authenticate(request, username=username, password=password)
+                print(f"User from authenticate: {user}")  # Debugging print
+
+                if user is not None:
+                    login(request, user)
+                    print("User authenticated and logged in, redirecting to dashboard")  # Debugging print
+                    return redirect('customer-dashboard')
+                else:
+                    print("User authentication failed")  # Debugging print
+                    messages.error(request, 'User does not exist in the local database')
+            else:
+                print("API login failed")  # Debugging print
+                messages.error(request, 'Login failed with the external API')
+        else:
+            print("Form is invalid")  # Debugging print
+            messages.error(request, 'Invalid username or password')
+
+    # Render the login form for both GET requests and failed POST requests
+    print("Rendering customer login form")  # Debugging print
+    return render(request, 'vehicle/customerlogin.html', {'form': form})
 def is_customer(user):
     return user.groups.filter(name='CUSTOMER').exists()
 

@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('customerclick', views.customerclick_view),
     path('customersignup', views.customer_signup_view,name='customersignup'),
-    path('customerlogin', LoginView.as_view(template_name='vehicle/customerlogin.html'),name='customerlogin'),
+    path('customerlogin', views.customer_login_view, name='customerlogin'),
 
     path('customer-dashboard', views.customer_dashboard_view,name='customer-dashboard'),
     path('customer-request', views.customer_request_view,name='customer-request'),

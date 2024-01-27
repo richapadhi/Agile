@@ -8,17 +8,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <style>
-        .navbar-custom {
-            background-color: #893168;
-        }
-        .navbar-custom .navbar-brand, .navbar-custom .nav-link {
-            color: #EAEAEA;
-        }
+          .navbar {
+                background-color: #4A1942;
+                color: #EAEAEA;
+                padding: 20px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              }
+
+              .navbar a, .navbar span {
+                color: #EAEAEA;
+                text-decoration: none;
+                padding: 8px 15px;
+                transition: color 0.3s ease;
+              }
+
+  .navbar a:hover, .navbar span:hover {
+    color: #893168;
+  }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-custom fixed-top">
-        <a href="/" class="navbar-brand">Service Management</a>
+        <a href="/" class="navbar-brand">Service Management Portal</a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
