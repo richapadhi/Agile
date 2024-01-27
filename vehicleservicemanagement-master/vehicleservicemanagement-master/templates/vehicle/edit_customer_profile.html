@@ -15,8 +15,8 @@
 
   input[type=submit] {
     width: 100%;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #4A1942;
+    color: #EAEAEA;
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -25,9 +25,13 @@
   }
 
   input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #2E1C2B;
   }
 
+        h1 {
+            text-align: center;
+            color: #2E1C2B; /* Use your desired color */
+        }
 
   </style>
 
@@ -35,7 +39,7 @@
 </head>
 
 <br><br><br><br><br>
-<h1 style="text-align:center;color:blue;">Edit Your Profile</h1>
+<h1 >Edit Your Profile</h1>
 <div>
   <form method="post"  enctype="multipart/form-data" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
