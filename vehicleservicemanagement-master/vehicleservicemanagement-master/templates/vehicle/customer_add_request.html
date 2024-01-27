@@ -7,44 +7,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Request</title>
   <style media="screen">
-    /* Container styling */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f4;
+      padding: 50px 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4A1942;
+    }
+
     .form-container {
+      background: white;
       max-width: 600px;
-      margin: 0 auto;
+      margin: 30px auto;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* Form element styling */
-    .form-input {
-      width: 100%;
+    .form-input, .form-input select {
+      width: calc(100% - 24px);
       padding: 12px;
-      margin: 8px 0;
+      margin-bottom: 20px;
       box-sizing: border-box;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      color: #333;
     }
 
-    /* Submit button styling */
     .submit-button {
       width: 100%;
-      background-color: #4CAF50;
+      background-color: #4A1942; /* Dark purple */
       color: white;
-      padding: 14px;
+      padding: 14px 20px;
       margin: 8px 0;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-weight: 500;
+      font-size: 18px;
     }
 
     .submit-button:hover {
-      background-color: #45a049;
+      background-color: #893168; /* Lighter purple */
     }
 
-    /* Additional styling */
     label {
-      display: block;
-      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+      margin-bottom: 8px;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
     }
   </style>
 </head>
