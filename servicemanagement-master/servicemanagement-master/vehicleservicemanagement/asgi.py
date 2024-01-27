@@ -1,5 +1,5 @@
 """
-ASGI config for vehicleservicemanagement project.
+ASGI config for servicemanagement project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
