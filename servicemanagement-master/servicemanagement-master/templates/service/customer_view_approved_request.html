@@ -134,6 +134,14 @@
         justify-content: center;
         gap: 10px;
     }
+     .decline-reason-container {
+        margin-top: 10px;
+        display: none; /* Initially hidden */
+    }
+    .decline-reason-display {
+        margin-top: 10px;
+        color: #4A1942; /* Text color */
+    }
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -176,6 +184,10 @@
                 if (this.status == 200) {
                     updateButtonState(offerId, isAccepted);
                     localStorage.setItem(offerId, isAccepted ? "Accepted" : "Declined");
+                    if (!isAccepted) {
+                    // Show the decline reason field only if the offer is declined
+                    showDeclineReasonField(offerId);
+                }
                 } else {
                     button.value = isAccepted ? 'Accept' : 'Decline';
                     console.error('Error processing request');
@@ -201,13 +213,48 @@
         }
     }
 
+    function showDeclineReasonField(offerId) {
+    document.getElementById("decline-reason-container-" + offerId).style.display = 'block';
+    }
+
+    function submitDeclineReason(event, offerId) {
+        event.preventDefault();
+        var reason = document.getElementById("decline-reason-" + offerId).value.trim();
+        localStorage.setItem("declineReason-" + offerId, reason || "No Reason Stated!");
+
+        // Update the UI to show the decline reason
+        displayDeclineReason(offerId, reason);
+
+        // Hide the text area and submit button
+        document.getElementById("decline-reason-container-" + offerId).style.display = 'none';
+
+        // Update button states as needed
+        var declineButton = document.getElementById("decline-button-" + offerId);
+        declineButton.disabled = true;
+        declineButton.classList.add('disabled');
+        declineButton.value = "Declined";
+    }
+
+    function displayDeclineReason(offerId, reason) {
+        var reasonDisplay = document.getElementById("decline-reason-display-" + offerId);
+        reasonDisplay.textContent = "Decline Reason: " + reason;
+        reasonDisplay.style.display = "block";
+    }
+
     function loadStoredStates() {
         var acceptButtons = document.querySelectorAll('[id^="accept-button-"]');
+        var declineButtons = document.querySelectorAll('[id^="decline-button-"]');
+
         acceptButtons.forEach(function(button) {
             var offerId = button.id.split('-').pop();
             var state = localStorage.getItem(offerId);
-            if (state) {
-                updateButtonState(offerId, state === "Accepted");
+            var storedReason = localStorage.getItem("declineReason-" + offerId) || "No Reason Stated!"; // Default to "No Reason Stated!" if no reason is found
+
+            if (state === "Accepted") {
+                updateButtonState(offerId, true);
+            } else if (state === "Declined") {
+                updateButtonState(offerId, false);
+                displayDeclineReason(offerId, storedReason);
             }
         });
     }
@@ -282,6 +329,13 @@
                                                             <input type="button" id="decline-button-{{ specific_offer.offerId }}" class="button decline" value="Decline" onclick="handleOfferResponse(event, false, '{{ specific_offer.offerId }}')">
                                                         {% endif %}
                                                         </div>
+                                                        <div id="decline-reason-container-{{ specific_offer.offerId }}" class="decline-reason-container">
+                                                            <textarea id="decline-reason-{{ specific_offer.offerId }}" placeholder="Reason for Decline" rows="4" style="width: 100%;"></textarea>
+                                                            <div style="text-align: center; margin-top: 10px;">
+                                                                <button id="submit-decline-{{ specific_offer.offerId }}" class="button decline" onclick="submitDeclineReason(event, '{{ specific_offer.offerId }}')">Submit Reason</button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="decline-reason-display-{{ specific_offer.offerId }}" class="decline-reason-display" style="display: none;"></div>
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
