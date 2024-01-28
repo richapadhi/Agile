@@ -1,4 +1,4 @@
-# Agile - SERVICE MANAGEMENT PORTAL
+# AGILE - SERVICE MANAGEMENT PORTAL
 ![developer](https://img.shields.io/badge/Developed%20By%20%3A-TEAM%204A%20-red)
 
 ## FUNCTIONS
