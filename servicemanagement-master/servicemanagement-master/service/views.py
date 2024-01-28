@@ -17,13 +17,13 @@ from django.http import JsonResponse
 def home_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request, 'vehicle/index.html')
+    return render(request, 'service/index.html')
 
 # for showing signup/login button for customer
 def customerclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request, 'vehicle/customerclick.html')
+    return render(request, 'service/customerclick.html')
 
 def customer_signup_view(request):
     userForm = forms.CustomerUserForm()
@@ -70,7 +70,7 @@ def customer_signup_view(request):
                 except json.JSONDecodeError:
                     print("Invalid JSON response")
                     messages.error(request, 'Invalid JSON response from server.')
-                    return render(request, 'vehicle/customersignup.html', context=mydict)
+                    return render(request, 'service/customersignup.html', context=mydict)
             else:
                 if response.status_code == 500:
                     print("Username already exists or invalid data sent.")  # Debugging line
@@ -79,11 +79,11 @@ def customer_signup_view(request):
                     messages.error(request, 'Server error occurred during registration')
                 else:
                     messages.error(request, 'An unknown error occurred during registration.')
-                return render(request, 'vehicle/customersignup.html', context=mydict)
+                return render(request, 'service/customersignup.html', context=mydict)
 
             return HttpResponseRedirect('customerlogin')
 
-    return render(request, 'vehicle/customersignup.html', context=mydict)
+    return render(request, 'service/customersignup.html', context=mydict)
 
 def customer_login_view(request):
     # Initialize the form for a GET request
@@ -124,7 +124,7 @@ def customer_login_view(request):
 
     # Render the login form for both GET requests and failed POST requests
     print("Rendering customer login form")  # Debugging print
-    return render(request, 'vehicle/customerlogin.html', {'form': form})
+    return render(request, 'service/customerlogin.html', {'form': form})
 def is_customer(user):
     return user.groups.filter(name='CUSTOMER').exists()
 
@@ -142,14 +142,14 @@ def afterlogin_view(request):
 @user_passes_test(is_customer)
 def customer_dashboard_view(request):
     customer = models.Customer.objects.get(user_id=request.user.id)
-    return render(request, 'vehicle/customer_dashboard.html')
+    return render(request, 'service/customer_dashboard.html')
 
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_request_view(request):
     customer = models.Customer.objects.get(user_id=request.user.id)
-    return render(request, 'vehicle/customer_dashboard.html', {'customer': customer})
+    return render(request, 'service/customer_dashboard.html', {'customer': customer})
 
 
 @login_required(login_url='customerlogin')
@@ -173,7 +173,7 @@ def customer_view_request_view(request):
     except requests.RequestException as e:
         print("Request failed: ", e)
 
-    return render(request, 'vehicle/customer_view_request.html', {'customer': customer, 'enquiries': enquiries})
+    return render(request, 'service/customer_view_request.html', {'customer': customer, 'enquiries': enquiries})
 
 
 @login_required(login_url='customerlogin')
@@ -187,10 +187,10 @@ def customer_delete_request_view(request, pk):
             enquiry.delete()  # Delete the enquiry from the database
         else:
             # Handle the case where the user doesn't have permission to delete this enquiry
-            return render(request, 'vehicle/error.html')
+            return render(request, 'service/error.html')
     except Request.DoesNotExist:
         # Handle the case where the enquiry with the given primary key doesn't exist
-        return render(request, 'vehicle/error.html')
+        return render(request, 'service/error.html')
 
     # Redirect back to the 'customer-view-request' page after successful deletion
     return redirect('customer-view-request')
@@ -231,7 +231,7 @@ def customer_view_approved_request_view(request):
             # Filter offers for the selected service ID
             specific_offers = [offer for offer in all_specific_offers if offer['serviceId'] == int(selected_service_id)]
             print("specific_offers:", specific_offers)
-    return render(request, 'vehicle/customer_view_approved_request.html', {
+    return render(request, 'service/customer_view_approved_request.html', {
         'offers': offers,
         'specific_offers': specific_offers,
         'selected_service_id': selected_service_id
@@ -243,7 +243,7 @@ def customer_view_approved_request_view(request):
 def customer_view_approved_request_invoice_view(request):
     customer = models.Customer.objects.get(user_id=request.user.id)
     enquiries = models.Request.objects.all().filter(customer_id=customer.id).exclude(status='Pending')
-    return render(request, 'vehicle/customer_view_approved_request_invoice.html',
+    return render(request, 'service/customer_view_approved_request_invoice.html',
                   {'customer': customer, 'enquiries': enquiries})
 
 
@@ -348,12 +348,12 @@ def customer_add_request_view(request):
             if response.status_code in [200, 201]:
                 return HttpResponseRedirect('customer-view-request')
             else:
-                return render(request, 'vehicle/error.html')
+                return render(request, 'service/error.html')
         else:
             print("form is invalid")
             print(enquiry.errors)
         return HttpResponseRedirect('customer-dashboard')
-    return render(request, 'vehicle/customer_add_request.html',
+    return render(request, 'service/customer_add_request.html',
                   {'enquiry': enquiry, 'customer': customer, 'domain_names': domain_names, 'roleName': roleName})
 
 
@@ -361,7 +361,7 @@ def customer_add_request_view(request):
 @user_passes_test(is_customer)
 def customer_profile_view(request):
     customer = models.Customer.objects.get(user_id=request.user.id)
-    return render(request, 'vehicle/customer_profile.html', {'customer': customer})
+    return render(request, 'service/customer_profile.html', {'customer': customer})
 
 
 @login_required(login_url='customerlogin')
@@ -381,7 +381,7 @@ def edit_customer_profile_view(request):
             user.save()
             customerForm.save()
             return HttpResponseRedirect('customer-profile')
-    return render(request, 'vehicle/edit_customer_profile.html', context=mydict)
+    return render(request, 'service/edit_customer_profile.html', context=mydict)
 
 # ============================================================================================
 # CUSTOMER RELATED views END
@@ -389,7 +389,7 @@ def edit_customer_profile_view(request):
 
 # for aboutus
 def aboutus_view(request):
-    return render(request, 'vehicle/aboutus.html')
+    return render(request, 'service/aboutus.html')
 
 
 

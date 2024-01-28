@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vehicle', '0014_rename_address_customer_email'),
+        ('service', '0014_rename_address_customer_email'),
     ]
 
     operations = [

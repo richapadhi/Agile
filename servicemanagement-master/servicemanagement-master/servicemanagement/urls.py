@@ -1,12 +1,12 @@
 """
-vehicle
+service
 """
 from django.contrib import admin
 from django.urls import path
-from vehicle import views
+from service import views
 from django.contrib.auth.views import LoginView,LogoutView
 from django.urls import path
-#from vehicle.views import delete_enquiry
+#from service.views import delete_enquiry
 class LogoutViewWithGet(LogoutView):
     def get(self, *args, **kwargs):
         return self.post(*args, **kwargs)
@@ -32,7 +32,7 @@ urlpatterns = [
     path('customer-view-approved-request-invoice',views.customer_view_approved_request_invoice_view,name='customer-view-approved-request-invoice'),
     path('api/v1/serviceManagement/<int:service_id>', views.delete_service, name='delete_service'),
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
-    path('logout', LogoutView.as_view(template_name='vehicle/index.html'),name='logout'),
+    path('logout', LogoutView.as_view(template_name='service/index.html'),name='logout'),
 
     path('aboutus', views.aboutus_view),
 

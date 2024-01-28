@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('vehicle', '0001_initial'),
+        ('service', '0001_initial'),
     ]
 
     operations = [
@@ -35,8 +35,8 @@ class Migration(migrations.Migration):
                 ('problem_description', models.CharField(max_length=500)),
                 ('date', models.DateField(auto_now=True)),
                 ('cost', models.PositiveIntegerField(null=True)),
-                ('customer', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='vehicle.Customer')),
-                ('mechanic', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='vehicle.Mechanic')),
+                ('customer', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='service.Customer')),
+                ('mechanic', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='service.Mechanic')),
             ],
         ),
     ]
