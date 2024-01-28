@@ -12,10 +12,9 @@
 ---
 ### Other Features
 - we can change theme of website day(white) and night(black)
-- if customer is deleted by admin then their request(Enquiry) will be deleted automatically
 
 ## HOW TO RUN THIS PROJECT
-- Install Python 3.9 and above (Dont Forget to Tick Add to Path while installing Python)
+- Install Python 3.10 and above (Dont Forget to Tick Add to Path while installing Python)
 - Open Terminal and Execute Following Commands :
 ```
 pip install django
@@ -24,7 +23,7 @@ pip install -r requirements.txt
 
 ```
 - Download This Project Zip Folder and Extract it
-- Move to project folder in Terminal. Then run following Commands :
+- Move to project folder (where manage.py is presnet) in your Terminal. Then run following Commands :
 ```
 py manage.py makemigrations
 py manage.py migrate
@@ -33,18 +32,6 @@ py manage.py runserver
 - Now enter following URL in Your Browser Installed On Your Pc
 ```
 http://127.0.0.1:8000/
-```
-
-## CHANGES REQUIRED FOR CONTACT US PAGE
-- In settings.py file, You have to give your email and password
-```
-EMAIL_HOST_USER = 'youremail@gmail.com'
-EMAIL_HOST_PASSWORD = 'your email password'
-EMAIL_RECEIVING_USER = 'youremail@gmail.com'
-```
-- Login to gmail through host email id in your browser and open following link and turn it ON
-```
-https://myaccount.google.com/lesssecureapps
 ```
 ## Drawbacks/LoopHoles
 - When customer edit their profile then he/she must login again because their username/password is updated in db.
