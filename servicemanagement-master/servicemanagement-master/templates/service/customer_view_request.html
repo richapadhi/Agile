@@ -113,23 +113,39 @@ function updateStatusColumn(serviceOffers) {
 
 function deleteService(serviceId) {
     console.log('Deleting service with ID:', serviceId);
-    if (confirm('Are you sure you want to delete this service?')) {
-        fetch(`http://ec2-54-166-224-107.compute-1.amazonaws.com:9198/api/v1/serviceManagement/${serviceId}`, {
-            method: 'DELETE',
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to delete the service. Server returned ${response.status} - ${response.statusText}`);
+
+    // Check if the service ID is present in the API
+    fetch('https://agiledev3a.pythonanywhere.com/p3aplatform/api/service_offers')
+        .then(response => response.json())
+        .then(serviceOffers => {
+            var matchingOffer = serviceOffers.find(offer => offer.serviceId == serviceId);
+
+            if (matchingOffer) {
+                // Service ID is present, display confirmation message
+                alert('Deletion is not possible as offers have been provided.');
             } else {
-                location.reload();
+                // Service ID is not present, proceed with deletion
+                if (confirm('Are you sure you want to delete this service?')) {
+                    fetch(`http://ec2-54-166-224-107.compute-1.amazonaws.com:9198/api/v1/serviceManagement/${serviceId}`, {
+                        method: 'DELETE',
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to delete the service. Server returned ${response.status} - ${response.statusText}`);
+                            } else {
+                                location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error deleting service');
+                        });
+                }
             }
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error deleting service');
-        });
-    }
+        .catch(error => console.error('Error fetching data from service_offers API:', error));
 }
+
 </script>
 </head>
 <body>
