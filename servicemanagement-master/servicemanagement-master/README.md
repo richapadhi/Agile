@@ -3,7 +3,7 @@
 
 ## FUNCTIONS
 ## User
-- User will signup and login into system
+- User will register and login into system
 - User can make request for service of their Employee by providing details (Project Information, Start Date, End Date, Work Location, Position Domain, Postion Role, Experience Level, Technology, Skills)
 - After Request is created, user can check the status of service and delete request (Enquiry) if user change their mind (ONLY PENDING REQUEST WHOSE OFFER HAS NOT BE BEEN PROVIDED CAN BE DELETED )
 - User can check status of Request(Enquiry) that is Pending, or Completed
